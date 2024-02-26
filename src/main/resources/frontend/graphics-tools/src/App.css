@@ -1,0 +1,27 @@
+.mainContainer {
+  display: flex;
+  margin: 5px;
+}
+
+.column1 {
+  flex: 1;
+  width: 800px;
+  text-align: left;
+}
+
+.column1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.projectDetailsBar {
+  text-align: right;
+  width: 800px;
+}
+
+.threeContainer {
+  width: 800px;
+  height: 500px;
+  background-color: black;
+}

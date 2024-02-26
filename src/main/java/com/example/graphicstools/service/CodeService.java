@@ -1,11 +1,9 @@
 package com.example.graphicstools.service;
 
-import com.example.graphicstools.model.Image_Project;
 import com.example.graphicstools.model.Project;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.SetOptions;
+
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
