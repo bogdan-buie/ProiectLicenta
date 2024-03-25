@@ -87,6 +87,22 @@ public class ImageService {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 
+    public String deleteImage(String imageName) {
+        try {
+            Storage storage = StorageOptions.getDefaultInstance().getService();
+            BlobId blobId = BlobId.of(BUCKET_NAME, FOLDER + "/" + imageName);
+            boolean deleted = storage.delete(blobId);
+            if (deleted) {
+                return "Image deleted successfully: " + imageName;
+            } else {
+                return "Failed to delete image: " + imageName;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Failed to delete image: " + imageName;
+    }
+
 
 //    public Object download(String fileName) throws IOException {
 //        String destFileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));     // to set random strinh for destination file name

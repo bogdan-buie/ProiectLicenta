@@ -4,14 +4,14 @@ public class Project {
     private String id;
     private String name;
     private int grade;
-    private String lastModification;
+    private Long lastModification;
     private String description;
     private String fileName;
     private String link;
     public Project() {
     }
 
-    public Project(String id, String name, int grade, String lastModification, String description, String fileName, String link) {
+    public Project(String id, String name, int grade, Long lastModification, String description, String fileName, String link) {
         this.id = id;
         this.name = name;
         this.grade = grade;
@@ -45,11 +45,11 @@ public class Project {
         this.grade = grade;
     }
 
-    public String getLastModification() {
+    public Long getLastModification() {
         return lastModification;
     }
 
-    public void setLastModification(String lastModification) {
+    public void setLastModification(Long lastModification) {
         this.lastModification = lastModification;
     }
 

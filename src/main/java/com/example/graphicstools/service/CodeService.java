@@ -4,17 +4,12 @@ import com.example.graphicstools.model.Project;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.storage.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.UUID;
 @Service
@@ -22,6 +17,7 @@ public class CodeService {
     private static final String BUCKET_NAME = "sodium-coil-312918.appspot.com";  //gs://sodium-coil-312918.appspot.com
     private static final String FOLDER = "projects";
     private ProjectService projectService;
+
 
     public CodeService() {
         this.projectService = new ProjectService();
@@ -54,9 +50,11 @@ public class CodeService {
             String URL = this.uploadFile(file, fileName);                                 // to get uploaded file link
             file.delete();
 
+            // Setare link si numele fisierului asociat
             Project myProject = projectService.getProject(projectId);
             myProject.setLink(URL);
             myProject.setFileName(fileName);
+            myProject.setLastModification(System.currentTimeMillis());
             projectService.updateProject(projectId,myProject);
 
             return URL;
@@ -73,7 +71,60 @@ public class CodeService {
         }
         return tempFile;
     }
+
+    /**
+     * Doar sterge fisierul cu un anumit nume din storage
+     * @param fileName numele fisierului
+     */
+    public String deleteFile(String fileName) {
+        try {
+            Storage storage = StorageOptions.getDefaultInstance().getService();
+            BlobId blobId = BlobId.of(BUCKET_NAME, FOLDER + "/" + fileName);
+            boolean deleted = storage.delete(blobId);
+            if (deleted) {
+               return "File deleted successfully: " + fileName;
+            } else {
+                return "Failed to delete file: " + fileName;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Failed to delete file: " + fileName;
+    }
+
+    public String updateFile(MultipartFile multipartFile, String projectId) {
+        try {
+            // identificam proiectul care trebuie actualizat si numele fisierului asociat
+            Project myProject = this.projectService.getProject(projectId);
+            String oldFileName = myProject.getFileName();
+
+            // Șterge fișierul vechi
+            if(oldFileName!=null){
+                deleteFile(oldFileName);
+            }
+
+            // Incarcam fișierul nou
+            return upload(multipartFile, projectId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "File couldn't be updated. Something went wrong";
+        }
+    }
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
+//    public byte[] downloadFile(String fileName) throws IOException {
+//        InputStream inputStream = CodeService.class.getClassLoader().getResourceAsStream("firebase-service-credentials.json");
+//        Credentials credentials = GoogleCredentials.fromStream(inputStream);
+//        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+//
+//        Blob blob = storage.get(BUCKET_NAME,FOLDER + "/"+ fileName);
+//        if (blob != null) {
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            blob.downloadTo(outputStream);
+//            return outputStream.toByteArray();
+//        }
+//        return null;
+//    }
+
 }

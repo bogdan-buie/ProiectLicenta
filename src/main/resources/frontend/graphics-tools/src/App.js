@@ -1,65 +1,33 @@
-import React, { useState } from 'react';
-import CodeEditor from './components/CodeEditor';
-import ThreeScene2 from './components/ThreeScene2';
-import Console from './components/Console';
+import React from 'react';
 import "./App.css";
-import MenuBar from './components/MenuBar';
+import Header from './containers/Header/Header';
+import IDE from './pages/private/user/IDE/IDE';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from "./pages/public/Home/Home";
+import AuthComponent from "./pages/public/Auth/AuthComponent";
+import UserPage from "./pages/private/user/UserPage/UserPage";
+import AddProject from "./pages/private/user/AddProject/AddProject";
+import ProjectPage from "./pages/private/user/ProjectPage/ProjectPage";
+import { ToastContainer } from 'react-toastify'; // Adaugă această linie
+import "react-toastify/dist/ReactToastify.css";
 
-export default class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { editorData: ``, codeForRun: '', consoleMessages: [] }
-    this.updateCode = this.updateCode.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.manageCode = this.manageCode.bind(this);
-    this.updateConsoleMessages = this.updateConsoleMessages.bind(this);
-  }
-
-  updateCode(data) {
-    console.log(data);
-    this.setState({ editorData: data });
-  }
-  updateConsoleMessages(messages) {
-    console.log(messages);
-    this.setState({ consoleMessages: messages });
-  }
-
-  manageCode(data) {
-    console.log(data);
-    this.state.editorData = data;
-  }
-  handleButtonClick() {
-    this.setState({ codeForRun: this.state.editorData });
-  }
-
-  render() {
-    return (
-      <div className="App" >
-        <MenuBar></MenuBar>
-        <div className='mainContainer'>
-
-          <div className='column1'>
-            <div className='projectDetailsBar'>
-              <button onClick={this.handleButtonClick}>RUN</button>
-            </div>
-            <CodeEditor manageCode={this.manageCode} />
-          </div>
-
-
-          <div className='column2'>
-
-            <div className='threeContainer'>
-              <ThreeScene2 code={this.state.codeForRun} updateConsoleMessages={this.updateConsoleMessages} />
-            </div>
-
-            <Console consoleMessages={this.state.consoleMessages} />
-          </div>
-        </div>
-
-
-
-      </div>
-    )
-  };
+const App = () => {
+  return (
+    <div className="App">
+      <ToastContainer /> {/* Notificări */}
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<AuthComponent />} />
+          <Route path="/mypage" element={<UserPage />} />
+          <Route path="/projectPage/:id" element={<ProjectPage />} />
+          <Route path="/addProject/:userId" element={<AddProject />} />
+          <Route exact path="/editProject/:id" element={<IDE />} ></Route>
+        </Routes>
+      </Router>
+    </div>
+  );
 }
+
+export default App;

@@ -14,6 +14,7 @@ public class FirebaseInitializer {
     public void initialization() {
 
         FileInputStream serviceAccount;
+
         try {
             serviceAccount = new FileInputStream("src/main/resources/firebase-service-credentials.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
