@@ -1,0 +1,109 @@
+.IDE {
+    width: 100%;
+    height: 90%;
+    background-color: #24252A;
+    padding: 0px;
+}
+
+.IDE .mainContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.IDE .column1 {
+    flex: 1;
+    text-align: left;
+    width: 50%;
+    height: 100%;
+}
+
+.IDE .column2 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 50%;
+    height: 100%;
+}
+
+.IDE .projectDetailsBar {
+    display: flex;
+    /* Folosește flexbox pentru a controla alinierea butoanelor */
+    justify-content: flex-end;
+    /* Aliniază butoanele la stânga */
+    width: 100%;
+    height: 5%;
+    align-items: center;
+    background-color: #3b3b3b;
+
+}
+
+.IDE .projectDetailsBar ul {
+    list-style-type: none;
+    padding-right: 5px;
+}
+
+.IDE .projectDetailsBar li {
+    display: inline;
+    border: 1px solid #5f5f5f;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.IDE .projectDetailsBar li a {
+    text-decoration: none;
+
+    align-items: center;
+    padding: 5px 20px 5px 20px;
+    width: 100px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.IDE .btn {
+    align-items: center;
+    padding: 5px 7px 5px 7px;
+    width: 100px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.IDE button {
+    padding: 5px 10px 5px 10px;
+    margin-right: 5px;
+
+    width: fit-content;
+
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.IDE button:hover {
+    background-color: #0056b3;
+}
+
+/* Change the link color to #111 (black) on hover */
+.IDE .projectDetailsBar li:hover {
+    background-color: rgb(152, 152, 152);
+    color: white;
+    height: 100%;
+}
+
+.IDE .threeContainer {
+    width: 100%;
+    height: 80%;
+    background-color: rgb(0, 0, 0);
+}

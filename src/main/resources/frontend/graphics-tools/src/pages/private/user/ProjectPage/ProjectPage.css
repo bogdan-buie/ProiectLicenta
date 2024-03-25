@@ -1,0 +1,47 @@
+.projectPageContainer {
+    height: fit-content;
+    width: 100%;
+    background-color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.projectPageContainer .projectPageInfo {
+    align-items: left;
+    width: 80%;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    margin-top: 20px;
+    padding: 50px;
+    background-color: #ffffff;
+}
+
+.projectPageContainer .description {
+    width: 100%;
+    height: fit-content;
+    background-color: antiquewhite;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+
+    /* Setează margin-right pe "auto" pentru a alinia la dreapta */
+}
+
+.projectPageContainer .carouselContainer {
+    height: 640px;
+    /* background-color: antiquewhite; */
+    width: 100%;
+}
+
+.projectPageContainer label {
+    padding: 5px 0 5px 0;
+    font-weight: bold;
+    font-size: 17px;
+
+}
+
+.projectPageContainer .info {
+    margin-bottom: 20px;
+}
