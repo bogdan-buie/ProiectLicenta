@@ -22,6 +22,7 @@ public class ImageService {
     public static final String BUCKET_NAME = "sodium-coil-312918.appspot.com";  //gs://sodium-coil-312918.appspot.com
     public static final String FOLDER = "images";
     private static final String COLLECTION_NAME = "image_project";
+
     private Firestore db;
 
     public ImageService() {

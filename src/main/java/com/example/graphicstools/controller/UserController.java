@@ -1,5 +1,6 @@
 package com.example.graphicstools.controller;
 
+import com.example.graphicstools.dto.ChangePassword;
 import com.example.graphicstools.dto.LoginResponse;
 import com.example.graphicstools.dto.UserCredentials;
 import com.example.graphicstools.model.User;
@@ -42,18 +43,22 @@ public class UserController {
         }
     }
 
-    @PostMapping(path="/create")
-    public ResponseEntity<String> save(@RequestBody User user) throws Exception {
-        return userService.saveUser(user);
-    }
-    @PostMapping(path="/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody UserCredentials userCredentials) throws Exception {
-        return userService.login(userCredentials);
-    }
+//    @PostMapping(path="/create")
+//    public ResponseEntity<String> save(@RequestBody User user) throws Exception {
+//        return userService.saveUser(user);
+//    }
+//    @PostMapping(path="/login")
+//    public ResponseEntity<LoginResponse> login(@RequestBody UserCredentials userCredentials) throws Exception {
+//        return userService.login(userCredentials);
+//    }
 
-    @PutMapping (path="/update/{id}")
+    @PutMapping (path= "/update/{id}")
     public ResponseEntity<String> update(@PathVariable String id, @RequestBody User user) throws Exception{
         return userService.updateUser(id,user);
+    }
+    @PostMapping (path= "/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePassword changePassword) throws Exception{
+        return userService.changePassword(changePassword);
     }
 
     @DeleteMapping(path="/delete/{id}")

@@ -3,11 +3,11 @@ package com.example.graphicstools.service;
 import com.example.graphicstools.model.Image_Project;
 import com.example.graphicstools.model.Project;
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Image_ProjectService {
@@ -33,7 +33,21 @@ public class Image_ProjectService {
             ApiFuture<WriteResult> collectionApifuture = db.collection(COLLECTION_NAME).document(imageProject.getId()).delete();
         }
     }
-    public void getImageProjectByProjectId(String projectId){
+    // Functia sterge si imaginea si inregistrarea din image_project
+    public String deleteImageProjectByImageName(String imageName) throws ExecutionException, InterruptedException {
+        Query query = db.collection(COLLECTION_NAME).whereEqualTo("imageName", imageName);
+        ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
 
+        List<Image_Project> myImageProjects = new ArrayList<>();
+        QuerySnapshot querySnapshot = querySnapshotApiFuture.get();
+        String message = "Failed to delete image: " + imageName;
+        if (!querySnapshot.isEmpty()) {
+            for (QueryDocumentSnapshot document : querySnapshot) {
+                myImageProjects.add(document.toObject(Image_Project.class));
+            }
+            this.deleteImageProject(myImageProjects.get(0).getId());
+            message = this.imageService.deleteImage(myImageProjects.get(0).getImageName());
+        }
+        return message;
     }
 }

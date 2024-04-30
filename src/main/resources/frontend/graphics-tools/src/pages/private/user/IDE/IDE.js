@@ -5,87 +5,55 @@ import Console from '../../../../components/Console/Console';
 import "./IDE.css";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { request, request2 } from '../../../../utils/axios_helper';
+import { request, request2, getToken, getUserId } from '../../../../utils/axios_helper';
 import { useScreenshot } from 'use-react-screenshot';
 import { toast } from 'react-toastify';
+import Unauthorized from '../../../public/Unauthorized/Unauthorized';
+import {
+    Panel,
+    PanelGroup,
+    PanelResizeHandle
+} from "react-resizable-panels";
+
+import runIcon from '../../../../../src/assets/image/run.png';
+import saveIcon from '../../../../../src/assets/image/save.png';
+import ssIcon from '../../../../../src/assets/image/screenshot.png';
+import downloadIcon from '../../../../../src/assets/image/download.png';
+import uploadIcon from '../../../../../src/assets/image/upload.png';
+import { div } from 'three/examples/jsm/nodes/Nodes.js';
 
 const IDE = () => {
-    const ref = useRef(null);
+    const ref = useRef(null); // pt screenshot
+    const codePanelRef = useRef(null);
+    const scenePanelRef = useRef(null);
     const [image, takeScreenshot] = useScreenshot();
     const [editorData, setEditorData] = useState('');
     const [codeForRun, setCodeForRun] = useState('');
     const [project, setProject] = useState('');
     const [consoleMessages, setConsoleMessages] = useState([]);
-    const templateCode = `
-// Template
-// Creează o nouă scenă, cameră și renderer
-let scene, camera, cube;
-let renderer, controls;
-function init() {
-    scene = new THREE.Scene();
-    let height = window.innerHeight*0.6, width=window.innerWidth*0.50; 
-    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    
-    console.log(5);
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(width, height);
-    controls = new OrbitControls(camera, renderer.domElement);
-    sceneRef.current.appendChild(renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.screenSpacePanning = false;
-    controls.minDistance = 0;
-    controls.maxDistance = 100;
-}
-function sceneBuilding(){
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe:true });
-    cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    
-    const points = [];
-    points.push(new THREE.Vector3(2,0,0));
-    points.push(new THREE.Vector3(0,2,0));
-    points.push(new THREE.Vector3(0,0,-2));
-    
-    const geometry2 = new THREE.BufferGeometry().setFromPoints(points);
-    const line  = new THREE.Line(geometry2, material);
-    scene.add(line);
-    
-    camera.position.z = 5;
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-}
-function render() {
-    renderer.render(scene, camera)
-}
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth*0.6, window.innerHeight*0.5);
-    render();
-}
-    
-window.addEventListener('resize', onWindowResize, false);
-    
-    
-init();
-sceneBuilding();
-    
-// Pornim animația
-animate();
-`;
-
+    const [parentDimensions, setParentDimensions] = useState();
+    const [showThreeScene, setShowThreeScene] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [editorCollapsed, setEditorCollapsed] = useState(false); // Starea de collapsed a panoului cu editorul de cod
+    const [authorizedToView, setAuthorizedToView] = useState(false);
+    const [authorizedToEdit, setAuthorizedToEdit] = useState(false);
+    const [connectedUserID, setConnectedUserID] = useState();// id-ul utilizatorului conectat
 
     const { id } = useParams();
     useEffect(() => {
         loadProject();
-
+        setConnectedUserID(getUserId());
+        setParentDimensions({ width: window.innerWidth * 0.5, height: window.innerHeight * 0.8 });
+        console.log(parentDimensions);
     }, []);
+    useEffect(() => {
+        setTimeout(updateParentDimensions, 10);
+    }, [loading])
+
+    useEffect(() => {
+        if (connectedUserID && id)
+            checkIfUserIsAuthorized();
+    }, [connectedUserID]);
 
     useEffect(() => {
         if (project) {
@@ -93,8 +61,73 @@ animate();
         }
     }, [project]);
 
+    const updateParentDimensions = () => {
+        const parentElement = document.getElementById("parinte");
+        let rect;
+        if (parentElement) {
+            rect = parentElement.getBoundingClientRect();
+            setParentDimensions({ width: rect.width, height: rect.height });
+            console.log(parentDimensions);
+        }
+
+        setShowThreeScene(false);
+    };
+
+    window.addEventListener('resize', updateParentDimensions, false);
+
+    const handleCollapseCode = () => {
+        const codePanel = codePanelRef.current;
+        if (codePanel) {
+            if (codePanel.isCollapsed()) {
+                codePanel.expand();
+            } else {
+                codePanel.collapse();
+            }
+        }
+        setTimeout(updateParentDimensions, 10);
+
+    }
+    const handleCollapseScene = () => {
+        const scenePanel = scenePanelRef.current;
+        if (scenePanel) {
+            if (scenePanel.isCollapsed()) {
+                scenePanel.expand();
+
+            } else {
+                scenePanel.collapse();
+            }
+
+        }
+        setTimeout(updateParentDimensions, 10);
+    }
+    const checkIfUserIsAuthorized = () => {
+        console.log(connectedUserID + " " + project.id)
+
+        request(
+            "POST",
+            `/project/checkProject`,
+            { "idUser": `${connectedUserID}`, "idProject": `${id}` }
+        ).then(
+            (response) => {
+
+                console.log(response.data);
+                setAuthorizedToView(response.data.authToView);
+                setAuthorizedToEdit(response.data.authToEdit);
+                setLoading(false);
+
+            }).catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
+
+    }
+
+
+
     const handleCodeRun = () => {
         setCodeForRun(editorData);
+        setShowThreeScene(true);
     }
 
     const handleConsoleMessagesUpdate = (messages) => {
@@ -121,7 +154,7 @@ animate();
 
 
     const getCode = async () => {
-        if (project) {
+        if (project.link) {
             axios({
                 method: "GET",
                 url: project.link,
@@ -129,7 +162,7 @@ animate();
                 data: null
             }).then(
                 (response) => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     setEditorData(response.data);
                 }).catch(
                     (error) => {
@@ -137,7 +170,7 @@ animate();
                     }
                 );
         } else {
-            console.log("No Project Loaded");
+            console.log("Project does not have a file");
         }
 
     }
@@ -157,11 +190,15 @@ animate();
         const formData = new FormData();
         const fileBlob = new Blob([editorData], { type: 'text/javascript' });
         formData.append('file', fileBlob, 'project_code.js');
-
+        const token = getToken();
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        };
         request2(
             "PUT",
             `/code/update/idProject=${project.id}`,
-            'multipart/form-data',
+            headers,
             formData,
         ).then(
             (response) => {
@@ -187,12 +224,16 @@ animate();
         // Creează obiectul Blob din array-ul de bytes
         const fileBlob = new Blob([bytes], { type: 'image/png' });
         formData.append('file', fileBlob, 'poza.png');
-
+        const token = getToken();
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        };
         request2(
             "POST",
             `/image/upload/idProject=${project.id}`,
-            'multipart/form-data',
-            formData,
+            headers,
+            formData
         ).then(
             (response) => {
                 notify("Captura salvata cu succes");
@@ -227,39 +268,124 @@ animate();
         } else
             console.log("No capture Image");
     }
+    const handleFileInputChange = (event) => {
+        const file = event.target.files[0];
+        readFileContent(file);
+    };
+
+    const readFileContent = (file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            setEditorData(content);
+        };
+        reader.readAsText(file);
+    };
+
+    const handleOpenFileDialog = () => {
+        const inputElement = document.createElement('input');
+        inputElement.type = 'file';
+        inputElement.accept = '.js'; // acceptă doar fișiere JS
+        inputElement.onchange = handleFileInputChange;
+        inputElement.click();
+    };
+
 
     const notify = (message) => {
         // Calling toast method by passing string
         toast(message);
     };
     return (
-        <div className='IDE'>
-            <div className='mainContainer'>
-                <div className='column1'>
+        <div>
+            {loading ? (
+                <div className='loadingMessage'>Loading...</div>
+            ) : authorizedToEdit ? (
+                <div className='IDE'>
                     <div className='projectDetailsBar'>
-                        <button onClick={captureScreenshot} title="Take screenshot of ThreeJS window">Take Screenshot</button>
-                        <button onClick={saveCodeToFile} title="Download file">Download</button>
-                        <button onClick={updateCode} title="Save the code of this project">Save</button>
-                        <button onClick={handleCodeRun}>Run</button>
-
-                    </div>
-                    <CodeEditor manageCode={setEditorData} initialCode={editorData} />
-
-                </div>
-
-                <div className='column2'>
-                    <div className='threeContainer'>
-                        <div ref={ref}>
-                            <ThreeScene
-                                code={codeForRun}
-                                updateConsoleMessages={handleConsoleMessagesUpdate}
-                            />
+                        <div className='leftSection'>
+                            <p className='projectName'>{project.name}</p>
                         </div>
-
+                        <div className='rightSection'>
+                            <button onClick={handleCollapseCode} title="Expand/Collapse">
+                                {/* <img src={ssIcon} className='icon' /> */}
+                                Collapse code
+                            </button>
+                            <button onClick={handleCollapseScene} title="Expand/Collapse">
+                                {/* <img src={ssIcon} className='icon' /> */}
+                                Collapse scene
+                            </button>
+                            <button onClick={captureScreenshot} title="Take screenshot of ThreeJS window">
+                                <img src={ssIcon} className='icon' />
+                            </button>
+                            <button onClick={handleOpenFileDialog} title="Upload file">
+                                <img src={uploadIcon} className='icon' />
+                            </button>
+                            <button onClick={saveCodeToFile} title="Download file">
+                                <img src={downloadIcon} className='icon' />
+                            </button>
+                            <button onClick={updateCode} title="Save the code of this project">
+                                <img src={saveIcon} className='icon' />
+                            </button>
+                            <button onClick={handleCodeRun} title="Run this project">
+                                <img src={runIcon} className='icon' />
+                            </button>
+                        </div>
                     </div>
-                    <Console consoleMessages={consoleMessages} />
-                </div>
-            </div>
+                    <div className='mainContainer'>
+                        <PanelGroup direction="horizontal">
+                            <Panel
+                                collapsible={true}
+                                ref={codePanelRef}
+                            >
+                                <div className='column1'>
+                                    <CodeEditor manageCode={setEditorData} initialCode={editorData} />
+                                </div>
+                            </Panel>
+                            <PanelResizeHandle style={{
+                                backgroundColor: "#5b5b5b",
+                                cursor: "ew-resize",
+                                width: "4px",
+
+                            }} />
+                            <Panel onResize={updateParentDimensions}>
+                                <PanelGroup direction="vertical" >
+                                    <div className='column2'>
+                                        <Panel
+                                            onResize={updateParentDimensions}
+                                            defaultSizePercentage={80}
+                                            collapsible={true}
+                                            ref={scenePanelRef}
+                                        >
+                                            <div className='threeContainer' id="parinte">
+                                                {showThreeScene && (
+                                                    <div ref={ref} className='ref'>
+                                                        <ThreeScene
+                                                            code={codeForRun}
+                                                            dimension={parentDimensions}
+                                                            updateConsoleMessages={handleConsoleMessagesUpdate}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </Panel>
+                                        <PanelResizeHandle style={{
+                                            backgroundColor: "#5b5b5b",
+                                            cursor: "ns-resize",
+                                            height: "4px",
+
+                                        }} />
+                                        <Panel defaultSizePercentage={20}>
+                                            <Console consoleMessages={consoleMessages} />
+                                        </Panel>
+                                    </div>
+                                </PanelGroup>
+                            </Panel>
+                        </PanelGroup>
+                    </div>
+
+                </div >) : (
+                <Unauthorized />
+            )}
         </div>
     );
 }

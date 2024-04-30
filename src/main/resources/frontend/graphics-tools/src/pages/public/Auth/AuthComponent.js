@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AuthComponent.css';
-import { request, setUserId, setRole } from '../../../utils/axios_helper';
+import { request, requestLite, setUserId, setRole, setToken } from '../../../utils/axios_helper';
 
 const AuthComponent = () => {
     let navigate = useNavigate();
@@ -22,17 +22,22 @@ const AuthComponent = () => {
         setMessage(''); // Resetează mesajul de feedback
 
         if (isLogin) {
-            request(
+            requestLite(
                 "POST",
-                "/user/login",
+                "/public/login",
                 {
                     email: email,
                     password: password
                 }).then(
-                    (response) => {
-                        if (response.data.message === "Successful login" && response.data.role === "user") {
+                    (response) => {//if (response.data.message === "Successful login" && response.data.role === "user") {
+                        if (response.data.message === "Successful login") {
                             setRole(response.data.role);
                             setUserId(response.data.user_id);
+                            if (response.data.token) {
+                                setToken(response.data.token);
+                                //console.log(response.data.token);
+                            }
+
                             navigate('/mypage');
                         } else {
                             setMessage(response.data.message); // Setează mesajul de feedback pentru cazul în care parola nu este corectă
@@ -45,7 +50,7 @@ const AuthComponent = () => {
         } else {
             request(
                 "POST",
-                "/user/create",
+                "/public/register",
                 {
                     email: email,
                     password: password,
@@ -54,7 +59,16 @@ const AuthComponent = () => {
                     role: "user"//doar utilizatorii obișnuiți își pot crea cont
                 }).then(
                     (response) => {
-                        console.log(response.data);
+                        if (response.data.message === "User added with success" && response.data.role === "user") {
+                            setRole(response.data.role);
+                            setUserId(response.data.user_id);
+                            if (response.data.token) {
+                                setToken(response.data.token);
+                            }
+
+                            navigate('/mypage');
+                            console.log(response.data);
+                        }
                     }).catch(
                         (error) => {
                             console.log(error);

@@ -1,6 +1,8 @@
 package com.example.graphicstools.service;
-
+import com.example.graphicstools.dto.ClassRoomInfo;
+import com.example.graphicstools.dto.UserProjectsInfo;
 import com.example.graphicstools.model.Classroom;
+import com.example.graphicstools.model.User;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
@@ -8,12 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ClassroomService {
     private static final String COLLECTION_NAME = "classroom";
-
+    private UserService userService;
+    //private ProjectService projectService;
 
     public ClassroomService(){
+        //this.userService = new UserService();
+        //this.projectService = new ProjectService();
     }
 
     public ResponseEntity<String> saveClassroom( Classroom myclass) throws Exception {
@@ -38,6 +45,23 @@ public class ClassroomService {
         }
         return null;
     }
+//    public ClassRoomInfo getClassroomInfo(String classId) throws Exception {
+//        Classroom classroom = this.getClassroom(classId);
+//        List<User> usersOfThisClass = userService.getUsersByClassId(classId);
+//        int totalProjects = 0;
+//        int totalUngradedProjects = 0;
+//        for(User u: usersOfThisClass ){
+//            UserProjectsInfo userProjectsInfo = projectService.getUserProjectsInfo(u.getUid());
+//            totalProjects += userProjectsInfo.getTotalProjects();
+//            totalUngradedProjects += userProjectsInfo.getTotalUngradedProjects();
+//        }
+//        ClassRoomInfo classRoomInfo = new ClassRoomInfo();
+//        classRoomInfo.setClassId(classroom.getId());
+//        classRoomInfo.setTotalProjects(totalProjects);
+//        classRoomInfo.setTotalUsers(usersOfThisClass.size());
+//        classRoomInfo.setTotalUngradedProjects(totalUngradedProjects);
+//        return classRoomInfo;
+//    }
 
 
     public ResponseEntity<String> updateClassroom(String id, Classroom classroom) throws Exception {

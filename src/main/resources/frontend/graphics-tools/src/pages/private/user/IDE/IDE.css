@@ -1,6 +1,6 @@
 .IDE {
-    width: 100%;
-    height: 90%;
+    width: 100vw;
+    height: 100vh;
     background-color: #24252A;
     padding: 0px;
 }
@@ -9,14 +9,16 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100%;
+    height: 95%;
+    overflow: auto;
 }
 
 .IDE .column1 {
     flex: 1;
     text-align: left;
-    width: 50%;
+    width: 100%;
     height: 100%;
+
 }
 
 .IDE .column2 {
@@ -24,20 +26,40 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    width: 50%;
+    width: 100%;
     height: 100%;
+
 }
 
 .IDE .projectDetailsBar {
     display: flex;
-    /* Folosește flexbox pentru a controla alinierea butoanelor */
-    justify-content: flex-end;
-    /* Aliniază butoanele la stânga */
     width: 100%;
     height: 5%;
     align-items: center;
-    background-color: #3b3b3b;
 
+    background: radial-gradient(circle at 20% center,
+            rgb(44, 8, 18) 0%,
+            #1F2836 100%);
+    box-shadow: rgba(0, 0, 0, 0.5) 0px -50px 36px -28px inset;
+
+    /* background-color: #1F2836; */
+}
+
+.IDE .leftSection {
+    flex: 1;
+    /* Asta va face ca această secțiune să ocupe spațiul disponibil */
+}
+
+.IDE .projectName {
+    padding: 2px;
+    margin-left: 10px;
+    color: beige;
+}
+
+.rightSection {
+    display: flex;
+    justify-content: flex-end;
+    /* Aliniere butoane la dreapta */
 }
 
 .IDE .projectDetailsBar ul {
@@ -56,6 +78,7 @@
 .IDE .projectDetailsBar li a {
     text-decoration: none;
 
+    font-size: 15px;
     align-items: center;
     padding: 5px 20px 5px 20px;
     width: 100px;
@@ -69,6 +92,7 @@
 
 .IDE .btn {
     align-items: center;
+    font-size: 15px;
     padding: 5px 7px 5px 7px;
     width: 100px;
     background-color: #007bff;
@@ -80,20 +104,25 @@
 
 .IDE button {
     padding: 5px 10px 5px 10px;
-    margin-right: 5px;
-
+    margin-right: 1px;
+    font-size: 15px;
     width: fit-content;
-
-    background-color: #007bff;
+    min-width: 55px;
+    background-color: inherit;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .IDE button:hover {
-    background-color: #0056b3;
+    background-color: #364051;
 }
+
 
 /* Change the link color to #111 (black) on hover */
 .IDE .projectDetailsBar li:hover {
@@ -104,6 +133,17 @@
 
 .IDE .threeContainer {
     width: 100%;
-    height: 80%;
+    height: 100%;
     background-color: rgb(0, 0, 0);
+}
+
+.IDE .ref {
+    width: 100%;
+    height: 100%;
+}
+
+.IDE .icon {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
 }

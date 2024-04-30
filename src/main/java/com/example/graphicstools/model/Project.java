@@ -4,6 +4,8 @@ public class Project {
     private String id;
     private String name;
     private int grade;
+    private String status;
+    private int importsNr;
     private Long lastModification;
     private String description;
     private String fileName;
@@ -11,10 +13,12 @@ public class Project {
     public Project() {
     }
 
-    public Project(String id, String name, int grade, Long lastModification, String description, String fileName, String link) {
+    public Project(String id, String name, int grade, String status, int importsNr, Long lastModification, String description, String fileName, String link) {
         this.id = id;
         this.name = name;
         this.grade = grade;
+        this.status = status;
+        this.importsNr = importsNr;
         this.lastModification = lastModification;
         this.description = description;
         this.fileName = fileName;
@@ -27,6 +31,22 @@ public class Project {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getImportsNr() {
+        return importsNr;
+    }
+
+    public void setImportsNr(int importsNr) {
+        this.importsNr = importsNr;
     }
 
     public String getName() {

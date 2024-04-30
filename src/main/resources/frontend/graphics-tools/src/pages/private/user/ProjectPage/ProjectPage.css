@@ -1,25 +1,26 @@
 .projectPageContainer {
     height: fit-content;
+    min-height: 90vh;
     width: 100%;
-    background-color: #ebebeb;
+    background-color: #E0ECFE;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .projectPageContainer .projectPageInfo {
     align-items: left;
     width: 80%;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     margin-top: 20px;
+    margin-bottom: 50px;
     padding: 50px;
     background-color: #ffffff;
 }
 
 .projectPageContainer .description {
-    width: 100%;
+    width: calc(100%-20px);
     height: fit-content;
     background-color: antiquewhite;
     border-radius: 5px;
@@ -44,4 +45,24 @@
 
 .projectPageContainer .info {
     margin-bottom: 20px;
+}
+
+.projectPageContainer .btnContainer {
+    justify-content: right;
+    display: flex;
+}
+
+.projectPageContainer button {
+    padding: 5px;
+    font-size: 15px;
+    width: fit-content;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.projectPageContainer button:hover {
+    background-color: #0056b3;
 }

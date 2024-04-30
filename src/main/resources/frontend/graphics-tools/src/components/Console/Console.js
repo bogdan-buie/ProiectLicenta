@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./Console.css"
+import broomIcon from '../../../src/assets/image/broom.png';
 
 const Console = (props) => {
     const [consoleMessages, setConsoleMessages] = useState([]);
@@ -16,7 +17,9 @@ const Console = (props) => {
         <div className='consoleContainer'>
             <div className='consoleBar'>
                 <h2>Console</h2>
-                <button className='btn' onClick={handleClearConsole}>Clear</button>
+                <button onClick={handleClearConsole} title="Clear console">
+                    <img src={broomIcon} className='icon' />
+                </button>
             </div>
 
             <div className='console'>

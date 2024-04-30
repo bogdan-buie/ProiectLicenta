@@ -30,6 +30,7 @@ const CodeEditor = (props) => {
                 defaultLanguage='javascript'
                 onChange={handleChange}
                 value={code}
+                options={{ minimap: { enabled: false } }}
             />
         </div>
     );

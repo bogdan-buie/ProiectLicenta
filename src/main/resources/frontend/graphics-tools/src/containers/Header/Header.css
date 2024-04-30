@@ -1,49 +1,103 @@
-.header li,
-a,
-button {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-    color: #edf0f1;
-    text-decoration: none;
-}
-
 .header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 10%;
     width: 100%;
-    background-color: #24252A;
+    background-color: #1F2836;
+    /* Adăugăm un spațiu între elemente */
 }
 
-.navLinks {
-    list-style: none;
+.header .leftSection {
+    flex: 1;
+    padding: 5px 10px 5px 30px;
+    width: max-content;
+
+    /* Facem acest div să crească pe toată lățimea disponibilă */
 }
 
-.navLinks li {
-    display: inline-block;
-    padding: 0px, 20px;
+.header .rightSection {
+    flex: 1;
+    padding: 5px 30px 5px 10px;
+    display: flex;
+    justify-content: flex-end;
 }
 
-.navLinks li a {
-    transition: all 0.3s ease 0s;
+.header button a {
+    text-decoration: none;
+    /* Elimină sublinierea */
+    color: inherit;
+    /* Păstrează culoarea butonului pentru link */
 }
 
-.navLinks li a:hover {
-    color: #0088a9
-}
-
-button {
-    padding: 5px 25px;
-    background-color: rgba(0, 136, 169, 1);
+.header button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-size: 17px;
+    background-color: #1F2836;
+    color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.3s ease 0s;
 }
 
-button:hover {
-    background-color: rgba(0, 136, 169, 0.80);
+.header button:hover {
+    background-color: #364051;
+}
 
+
+
+
+.header .userImage {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.header .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+.header .dropdownContent {
+    display: none;
+    position: absolute;
+    background-color: #FEFEFF;
+    min-width: 180px;
+
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    z-index: 1;
+    right: 0;
+    border-radius: 5px;
+    /* Așezăm dropdown-ul în partea dreaptă a containerului */
+}
+
+.header .dropdownContent a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+}
+
+.header .dropdownContent span {
+    color: black;
+    padding: 8px 16px;
+    display: block;
+    cursor: pointer;
+    /* Adăugăm pointer pentru a indica că este un element clicabil */
+    border-radius: 5px;
+}
+
+.header .dropdownContent a:hover {
+    background-color: #f3f4f6;
+}
+
+.header .dropdownContent span:hover {
+    background-color: #f3f4f6;
+}
+
+.header .dropdown:hover .dropdownContent {
+    display: block;
 }

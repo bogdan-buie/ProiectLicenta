@@ -19,6 +19,7 @@ export default function UserPage() {
         loadProjects();
     }, []);
     const handleProjectDeleted = () => {
+        // console.log("Actualizare lista")
         loadProjects(); // Actualizarea listei de proiecte după ștergere
     }
     const loadUserDetails = async () => {
@@ -43,11 +44,15 @@ export default function UserPage() {
             {}
         ).then(
             (response) => {
-                // Sortează proiectele în funcție de lastModification
-                const sortedProjects = response.data.sort((a, b) => {
-                    return b.lastModification - a.lastModification; // Sortare descrescătoare
-                });
-                setProjects(sortedProjects);
+                if (response.data) {
+                    console.log(response.data)
+                    // Sortează proiectele în funcție de lastModification
+                    const sortedProjects = response.data.sort((a, b) => {
+                        return b.lastModification - a.lastModification; // Sortare descrescătoare
+                    });
+                    setProjects(sortedProjects);
+                }
+
             }).catch(
                 (error) => {
                     console.log(error);
@@ -67,7 +72,7 @@ export default function UserPage() {
         <div className='userPage'>
             <div className='userInfo'>
                 <h1>{user.lastName} {user.name}</h1>
-                <div className='levelContainer'>Level {user.level}</div>
+                {/* <div className='levelContainer'>Level {user.level}</div> */}
             </div>
 
             <div className='searchBar'>
@@ -78,7 +83,7 @@ export default function UserPage() {
                     onChange={(e) => setKeyword(e.target.value)}
                     required
                 />
-                <button >Search</button>
+                {/* <button >Search</button> */}
                 <Link to={`/addProject/${user.uid}`}>
                     <button>Add project</button>
                 </Link>
@@ -86,7 +91,7 @@ export default function UserPage() {
 
             {filteredProjects.length > 0 ? (
                 filteredProjects.map(project => (
-                    <ProjectCard project={project} key={project.id} onProjectDeleted={handleProjectDeleted} />
+                    <ProjectCard project={project} key={project.id} onProjectDeleted={handleProjectDeleted} status="private" />
                 ))
             ) : (
                 <p>No projects found.</p>

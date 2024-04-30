@@ -1,25 +1,16 @@
 package com.example.graphicstools.dto;
 
-public class User_project {
-    private String id;
+public class UserProjectDTO {
     private String idProject;
     private String idUser;
 
-    public User_project() {
+    public UserProjectDTO() {
     }
 
-    public User_project(String id, String idProject, String idUser) {
-        this.id = id;
+    public UserProjectDTO(String idProject, String idUser) {
+
         this.idProject = idProject;
         this.idUser = idUser;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getIdProject() {

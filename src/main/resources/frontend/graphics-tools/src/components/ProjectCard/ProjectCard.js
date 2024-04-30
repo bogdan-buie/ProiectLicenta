@@ -3,28 +3,34 @@ import "./ProjectCard.css";
 import { request } from '../../utils/axios_helper';
 import { Link } from 'react-router-dom';
 import { millisToDateTime } from '../../utils/Utilities';
+import ConfirmAlert from '../ConfirmAlert/ConfirmAlert';
 
-export default function ProjectCard({ project, onProjectDeleted }) {
+export default function ProjectCard({ project, onProjectDeleted, status }) {
     const [images_project, setImagesProjects] = useState([]);
+    const [showConfirm, setShowConfirm] = useState(false);
+
     useEffect(() => {
         getImagesLink();
     }, []);
+
     const getImagesLink = async () => {
-        request(
-            "GET",
-            `/project/get/images/${project.id}`,
-            {}
-        ).then(
-            (response) => {
-                setImagesProjects(response.data);
-                console.log(response.data);
-            }).catch(
-                (error) => {
-                    console.log(error);
-                }
-            );
+        try {
+            const response = await request("GET", `/project/get/images/${project.id}`, {});
+            setImagesProjects(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
-    const deleteProject = async () => {
+
+    const handleDeleteButtonClick = () => {
+        setShowConfirm(true);
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirm(false);
+    };
+
+    const handleConfirmDelete = async () => {
         request(
             "DELETE",
             `/project/delete/${project.id}`,
@@ -40,6 +46,8 @@ export default function ProjectCard({ project, onProjectDeleted }) {
             );
     }
 
+    const shortenedDescription = project.description.length > 130 ? `${project.description.substring(0, 130)}...` : project.description;
+
     return (
         <div className='projectCard'>
             <div className='column1'>
@@ -54,17 +62,27 @@ export default function ProjectCard({ project, onProjectDeleted }) {
                     <Link to={`/projectPage/${project.id}`}>
                         <h1>{project.name}</h1>
                     </Link>
+                    {status === 'private' && (
+                        <div>
+                            <button onClick={handleDeleteButtonClick}>Delete</button>
+                            <Link to={`/editProject/${project.id}`}>
+                                <button>Edit project code</button>
+                            </Link>
+                        </div>
+                    )}
 
-                    <button onClick={deleteProject} >Delete</button>
-                    <Link to={`/editProject/${project.id}`}>
-                        <button>Edit project code</button>
-                    </Link>
                 </div>
-
                 <p><b>Grade: {project.grade}</b></p>
-                <p>{project.description}</p>
+                <p>{shortenedDescription}</p>
                 <p>Last modification: {millisToDateTime(project.lastModification)}</p>
             </div>
+            {showConfirm && (
+                <ConfirmAlert
+                    message="Are you sure you want to delete?"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancelDelete}
+                />
+            )}
         </div>
     )
 }

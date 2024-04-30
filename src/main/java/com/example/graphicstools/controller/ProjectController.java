@@ -1,10 +1,11 @@
 package com.example.graphicstools.controller;
 
+import com.example.graphicstools.dto.ProjectAuthResponse;
+import com.example.graphicstools.dto.UserProjectDTO;
 import com.example.graphicstools.model.Image_Project;
 import com.example.graphicstools.model.Project;
 import com.example.graphicstools.model.User;
 import com.example.graphicstools.service.ProjectService;
-import com.example.graphicstools.service.User_ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,31 @@ public class ProjectController {
 
         List<Image_Project> imageProjects = projectService.getProjectImages(id);
         return new ResponseEntity<>(imageProjects, HttpStatus.OK);
+    }
+    @GetMapping(path="/get/key={key}")
+    public ResponseEntity<List<Project>> searchProject(@PathVariable String key) {
+        List<Project> projects = projectService.searchPublicProjects(key);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+    @GetMapping(path="/get/topProjects/{n}")
+    public ResponseEntity<List<Project>> getTopProjects(@PathVariable String n) throws Exception {
+        List<Project> projects = projectService.getTopProjects(n);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/get/newestPublicProjects/{n}")
+    public ResponseEntity<List<Project>> getNewestPublicProject(@PathVariable String n) throws Exception {
+
+        List<Project> projects = projectService.getNewestPublicProjects(n);
+        return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+    @GetMapping(path="/incrementImports/{id}")
+    public ResponseEntity<String> incrementImportsNr(@PathVariable String id) throws Exception {
+        return projectService.incrementImports(id);
+    }
+    @PostMapping(path="/checkProject")
+    public ProjectAuthResponse checkProjectAuth(@RequestBody UserProjectDTO userProjectDTO) throws Exception {
+        return projectService.isUserAuthorizedToView(userProjectDTO);
     }
     @GetMapping(path="/get/userId/idProject={id}")
     public ResponseEntity<User> getUserId(@PathVariable String id) throws Exception {

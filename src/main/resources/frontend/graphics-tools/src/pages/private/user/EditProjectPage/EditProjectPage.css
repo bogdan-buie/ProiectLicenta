@@ -1,0 +1,95 @@
+.editProjectPageContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    border-radius: 10px;
+}
+
+.editProjectPageContainer h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.editProjectPageContainer form {
+    display: flex;
+    flex-direction: column;
+}
+
+.editProjectPageContainer label {
+    margin-bottom: 5px;
+}
+
+
+.editProjectPageContainer textarea#description {
+    height: 200px;
+    font-style: italic;
+    /* Schimbă această valoare la înălțimea dorită */
+}
+
+.editProjectPageContainer input[type="text"],
+.editProjectPageContainer textarea {
+    height: fit-content;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+.editProjectPageContainer .imageList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    margin-top: 20px;
+}
+
+.editProjectPageContainer .imageItem {
+    position: relative;
+}
+
+.editProjectPageContainer .imageItem img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.editProjectPageContainer .imageItem button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    opacity: 0.5;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: fit-content;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editProjectPageContainer .imageItem button:hover {
+    opacity: 1;
+}
+
+.editProjectPageContainer button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editProjectPageContainer button[type="submit"]:hover {
+    background-color: #0056b3;
+}

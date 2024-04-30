@@ -11,35 +11,34 @@
     padding: 20px 20px 20px 20px;
 
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
-.addProject .form {
+.addProject form {
     display: flex;
     flex-direction: column;
-    /* margin-right: 20px; */
-
+    width: 100%;
 }
 
 .addProject .form-control {
-
     width: 100%;
-
-
 }
 
 .addProject label {
     font-weight: bold;
 }
 
-.addProject input[type="text"],
-.addProject textarea {
-    width: 100%;
+.addProject .form input[type="text"],
+.addProject .form textarea {
+    width: calc(100% - 20px);
+    /* 20px este padding-ul pe care îl ai definit */
     padding: 10px;
 
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+
 
 .addProject textarea {
     min-height: 100px;
@@ -50,11 +49,14 @@
 .addProject .template {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: calc(100%-20px);
     height: fit-content;
     background-color: #cfe6ff;
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .addProject .column1 {
@@ -62,6 +64,7 @@
     text-align: left;
     width: 50%;
     height: 100%;
+    padding: 10px;
 }
 
 .addProject .column2 {
@@ -88,8 +91,13 @@
     background-color: #0056b3;
 }
 
-.aaddProject .toggle-mode {
+.addProject .toggle-mode {
     font-size: 14px;
     cursor: pointer;
     color: #007bff;
+}
+
+.addProject image {
+    height: 200px;
+    width: 200px;
 }

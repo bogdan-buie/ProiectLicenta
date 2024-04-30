@@ -1,28 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import "./ProjectPage.css";
 import { CopyBlock, dracula } from 'react-code-blocks';
-import { useParams } from 'react-router-dom';
-import { request } from '../../../../utils/axios_helper';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
+import { request, request2, getUserId, getToken } from '../../../../utils/axios_helper';
 import axios from 'axios';
 import { Carousel } from 'react-carousel-minimal';
 import { millisToDateTime } from '../../../../utils/Utilities';
+import Unauthorized from '../../../public/Unauthorized/Unauthorized';
 const ProjectPage = () => {
+    let navigate = useNavigate();
     const [project, setProject] = useState('');
     const [code, setCode] = useState('');
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState('');// datele user-ului care a creat proiectul
     const [images_project, setImagesProjects] = useState([]);
     const [data, setData] = useState([]); // Array nou pentru imagini
+    const [loading, setLoading] = useState(true);
+    const [authorizedToView, setAuthorizedToView] = useState(false);
+    const [authorizedToEdit, setAuthorizedToEdit] = useState(false);
+    const [connectedUserID, setConnectedUserID] = useState();// id-ul utilizatorului conectat
+
     useEffect(() => {
         loadProject();
-        getImagesLink();
+        //getImagesLink();
         loadUser();
+        setConnectedUserID(getUserId());
+
     }, []);
 
     useEffect(() => {
         if (project) {
             getCode();
+            getImagesLink();
+            checkIfUserIsAuthorized();
         }
     }, [project]);
+    useEffect(() => {
+        if (user) {
+            checkIfUserIsAuthorized();
+        }
+    }, [user]);
 
     const { id } = useParams();// project id
     const loadProject = async () => {
@@ -42,6 +59,29 @@ const ProjectPage = () => {
                 }
             );
     }
+    const checkIfUserIsAuthorized = async () => {
+        console.log(connectedUserID + " " + project.id)
+        if (project) {
+            request(
+                "POST",
+                `/project/checkProject`,
+                { "idUser": `${connectedUserID}`, "idProject": `${project.id}` }
+            ).then(
+                (response) => {
+                    console.log(response.data);
+                    setAuthorizedToView(response.data.authToView);
+                    setAuthorizedToEdit(response.data.authToEdit);
+                    setLoading(false);
+
+                }).catch(
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+        } else {
+            console.log("No Project Loaded");
+        }
+    }
     const loadUser = async () => {
         request(
             "GET",
@@ -50,6 +90,21 @@ const ProjectPage = () => {
         ).then(
             (response) => {
                 setUser(response.data);
+                console.log(response.data);
+
+            }).catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
+    const incrementImportsNr = async () => {
+        request(
+            "GET",
+            `/project/incrementImports/${id}`,
+            {}
+        ).then(
+            (response) => {
                 console.log(response.data);
 
             }).catch(
@@ -79,6 +134,7 @@ const ProjectPage = () => {
             console.log("No Project Loaded");
         }
     }
+
     const getImagesLink = async () => {
         request(
             "GET",
@@ -95,7 +151,7 @@ const ProjectPage = () => {
                     setData(newData);
                     //console.log(newData);
                 } else {
-                    console.log("Array-ul 'response.data' este gol.");
+                    //console.log("Array-ul 'response.data' este gol.");
                 }
             }).catch(
                 (error) => {
@@ -111,83 +167,164 @@ const ProjectPage = () => {
         fontSize: '20px',
         fontWeight: 'bold',
     }
+    const importProject = () => {
+        console.log("Importing project...");
+        createproject(project.name, project.description);
+        incrementImportsNr();
+
+    }
+    const createproject = async (name, description) => {
+        request(
+            "POST",
+            `project/create/user=${connectedUserID}`,
+            {
+                "id": "",
+                "name": `${name}`,
+                "grade": null,
+                "status": "private",
+                "lastModification": 0,//  se modifica pe backend cu dateTime-ul real
+                "importsNr": 0,
+                "description": `${description}`
+            }).then(
+                (response) => {
+
+                    if (response.data) {
+                        console.log(response.data);
+                        updateCode(response.data, code);
+                    }
+                    console.log(response.data);
+                }).catch(
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+    }
+    const updateCode = async (id, code) => {
+        const formData = new FormData();
+        const fileBlob = new Blob([code], { type: 'text/javascript' });
+        formData.append('file', fileBlob, 'project_code.js');
+        const token = getToken();
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        };
+        request2(
+            "PUT",
+            `/code/update/idProject=${id}`,
+            headers,
+            formData,
+        ).then(
+            (response) => {
+                console.log(response.data);
+                navigate('/mypage');
+
+            }).catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
 
     return (
         <div className='projectPageContainer'>
-            <div className='projectPageInfo'>
-                <div className='info'>
-                    <h1>{project.name}</h1>
-                    <i>Last modification: {millisToDateTime(project.lastModification)}</i>
-                </div>
-
-                <div className='info'>
-                    <label htmlFor="grade">Grade: {project.grade}</label>
-
-                </div>
-
-
-                <div className='info'>
-                    <label htmlFor="author">Author</label>
-                    <div id='author'>{user.lastName} {user.name}</div>
-                </div>
+            {loading ? (
+                <div className='loadingMessage'>Loading...</div>
+            ) : authorizedToView ? (
+                <div className='projectPageInfo'>
+                    <div className='btnContainer'>
+                        {!authorizedToEdit && authorizedToView && (
+                            <button onClick={importProject} >Import project</button>
+                        )}
+                        {authorizedToEdit && (<Link to={`/editProjectPage/${project.id}`}>
+                            <button>Edit project page</button>
+                        </Link>)}
 
 
-                <div className='info'>
-                    <label htmlFor="description">Description</label>
-                    <div className='description' id="description" >
-                        <i>"{project.description}"</i>
                     </div>
-                </div>
-
-                {data.length > 0 && (
                     <div className='info'>
-                        <label>Image gallery</label>
+                        <h1>{project.name}</h1>
+                        <i>Last modification: {millisToDateTime(project.lastModification)}</i>
 
                     </div>
-                )}
-                <div className='carouselContainer'>
+
+                    <div className='info'>
+                        <label htmlFor="grade">Grade: {project.grade}</label>
+
+                    </div>
+                    <div className='info'>
+                        <label htmlFor="status">Status: {project.status}</label>
+                    </div>
+                    <div className='info'>
+                        <label htmlFor="status">Imports number: {project.importsNr}</label>
+                    </div>
+
+
+                    <div className='info'>
+                        <label htmlFor="author">Author</label>
+                        <div id='author'>{user.lastName} {user.name}</div>
+                    </div>
+
+
+                    <div className='info'>
+                        <label htmlFor="description">Description</label>
+                        <div className='description' id="description" >
+                            <i>"{project.description}"</i>
+                        </div>
+                    </div>
+
                     {data.length > 0 && (
+                        <div className='info'>
+                            <label>Image gallery</label>
 
-                        <Carousel
-                            data={data}
-                            time={7000}
-                            width="850px"
-                            height="500px"
-                            captionStyle={captionStyle}
-                            radius="10px"
-                            slideNumber={true}
-                            slideNumberStyle={slideNumberStyle}
-                            captionPosition="bottom"
-                            automatic={true}
-                            dots={true}
-                            pauseIconColor="white"
-                            pauseIconSize="40px"
-                            slideBackgroundColor="darkgrey"
-                            slideImageFit="cover"
-                            thumbnails={true}
-                            thumbnailWidth="100px"
-                            style={{
-                                textAlign: "center",
-                                maxWidth: "850px",
-                                maxHeight: "500px",
-                                margin: "40px auto",
-                            }}
-                        />
+                        </div>
                     )}
-                </div>
-                <div className='info'>
-                    <label htmlFor="description">Source code</label>
-                    <CopyBlock
-                        options={{ showClipboard: true }}
-                        text={code}
-                        language='javascript'
-                        showLineNumbers='true'
-                        theme={dracula}
-                        wrapLongLines
-                    />
-                </div>
+                    {data.length > 0 && (
+                        <div className='carouselContainer'>
 
-            </div>
+
+                            <Carousel
+                                data={data}
+                                time={7000}
+                                width="850px"
+                                height="500px"
+                                captionStyle={captionStyle}
+                                radius="10px"
+                                slideNumber={true}
+                                slideNumberStyle={slideNumberStyle}
+                                captionPosition="bottom"
+                                automatic={true}
+                                dots={true}
+                                pauseIconColor="white"
+                                pauseIconSize="40px"
+                                slideBackgroundColor="darkgrey"
+                                slideImageFit="cover"
+                                thumbnails={true}
+                                thumbnailWidth="100px"
+                                style={{
+                                    textAlign: "center",
+                                    maxWidth: "850px",
+                                    maxHeight: "500px",
+                                    margin: "40px auto",
+                                }}
+                            />
+
+                        </div>
+                    )}
+                    <div className='info'>
+                        <label htmlFor="description">Source code</label>
+                        <CopyBlock
+                            options={{ showClipboard: true }}
+                            text={code}
+                            language='javascript'
+                            showLineNumbers='true'
+                            theme={dracula}
+                            wrapLongLines
+                        />
+                    </div>
+
+                </div>) : (
+                <Unauthorized />
+            )}
         </div>
     )
 }
