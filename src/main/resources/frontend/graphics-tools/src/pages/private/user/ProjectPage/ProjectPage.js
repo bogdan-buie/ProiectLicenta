@@ -8,6 +8,7 @@ import axios from 'axios';
 import { Carousel } from 'react-carousel-minimal';
 import { millisToDateTime } from '../../../../utils/Utilities';
 import Unauthorized from '../../../public/Unauthorized/Unauthorized';
+import ConfirmAlert from '../../../../components/ConfirmAlert/ConfirmAlert';
 const ProjectPage = () => {
     let navigate = useNavigate();
     const [project, setProject] = useState('');
@@ -19,7 +20,7 @@ const ProjectPage = () => {
     const [authorizedToView, setAuthorizedToView] = useState(false);
     const [authorizedToEdit, setAuthorizedToEdit] = useState(false);
     const [connectedUserID, setConnectedUserID] = useState();// id-ul utilizatorului conectat
-
+    const [showConfirm, setShowConfirm] = useState(false);
     useEffect(() => {
         loadProject();
         //getImagesLink();
@@ -225,6 +226,29 @@ const ProjectPage = () => {
             );
     }
 
+    const handleDeleteButtonClick = () => {
+        setShowConfirm(true);
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirm(false);
+    };
+
+    const handleConfirmDelete = async () => {
+        request(
+            "DELETE",
+            `/project/delete/${project.id}`,
+            {}
+        ).then(
+            (response) => {
+                console.log(response.data);
+                navigate('/mypage');
+            }).catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
+    }
     return (
         <div className='projectPageContainer'>
             {loading ? (
@@ -235,9 +259,14 @@ const ProjectPage = () => {
                         {!authorizedToEdit && authorizedToView && (
                             <button onClick={importProject} >Import project</button>
                         )}
-                        {authorizedToEdit && (<Link to={`/editProjectPage/${project.id}`}>
-                            <button>Edit project page</button>
-                        </Link>)}
+                        {authorizedToEdit && (
+                            <>
+                                <Link to={`/editProjectPage/${project.id}`}>
+                                    <button>Edit project page</button>
+                                </Link>
+                                <button onClick={handleDeleteButtonClick}>Delete</button>
+                            </>
+                        )}
 
 
                     </div>
@@ -324,6 +353,13 @@ const ProjectPage = () => {
 
                 </div>) : (
                 <Unauthorized />
+            )}
+            {showConfirm && (
+                <ConfirmAlert
+                    message="Are you sure you want to delete?"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancelDelete}
+                />
             )}
         </div>
     )

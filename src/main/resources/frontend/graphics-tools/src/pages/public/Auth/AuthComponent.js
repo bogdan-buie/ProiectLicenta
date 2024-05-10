@@ -40,7 +40,8 @@ const AuthComponent = () => {
 
                             navigate('/mypage');
                         } else {
-                            setMessage(response.data.message); // Setează mesajul de feedback pentru cazul în care parola nu este corectă
+                            console.log(response.data);
+                            setMessage(response.data); // Setează mesajul de feedback pentru cazul în care parola nu este corectă
                         }
                     }).catch(
                         (error) => {
@@ -129,7 +130,10 @@ const AuthComponent = () => {
                         />
                     </div>
                     {message && <p className="message">{message}</p>} {/* Afișează mesajul de feedback */}
-                    <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                    <div className='btnSection'>
+                        <button className="centered-button" type="submit">{isLogin ? 'Login' : 'Register'}</button>
+                    </div>
+
                 </form>
                 <p onClick={handleToggleMode} className="toggle-mode">
                     {isLogin ? 'Don\'t have an account? Register here.' : 'Already have an account? Login here.'}

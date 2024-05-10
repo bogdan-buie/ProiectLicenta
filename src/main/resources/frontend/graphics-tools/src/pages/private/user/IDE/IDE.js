@@ -3,7 +3,7 @@ import CodeEditor from '../../../../components/CodeEditor/CodeEditor'
 import ThreeScene from '../../../../components/ThreeScene/ThreeScene';
 import Console from '../../../../components/Console/Console';
 import "./IDE.css";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { request, request2, getToken, getUserId } from '../../../../utils/axios_helper';
 import { useScreenshot } from 'use-react-screenshot';
@@ -20,10 +20,12 @@ import saveIcon from '../../../../../src/assets/image/save.png';
 import ssIcon from '../../../../../src/assets/image/screenshot.png';
 import downloadIcon from '../../../../../src/assets/image/download.png';
 import uploadIcon from '../../../../../src/assets/image/upload.png';
-import { div } from 'three/examples/jsm/nodes/Nodes.js';
-
+import sideBarIcon from '../../../../../src/assets/image/side_bar.svg';
+import bottomBarIcon from '../../../../../src/assets/image/bottom_bar.svg';
+import homeIcon from '../../../../../src/assets/image/home.svg';
 const IDE = () => {
     const ref = useRef(null); // pt screenshot
+    let navigate = useNavigate();
     const codePanelRef = useRef(null);
     const scenePanelRef = useRef(null);
     const [image, takeScreenshot] = useScreenshot();
@@ -123,8 +125,6 @@ const IDE = () => {
 
     }
 
-
-
     const handleCodeRun = () => {
         setCodeForRun(editorData);
         setShowThreeScene(true);
@@ -132,6 +132,7 @@ const IDE = () => {
 
     const handleConsoleMessagesUpdate = (messages) => {
         console.log(messages);
+        setConsoleMessages();
         setConsoleMessages(messages);
     }
     const loadProject = async () => {
@@ -306,13 +307,17 @@ const IDE = () => {
                             <p className='projectName'>{project.name}</p>
                         </div>
                         <div className='rightSection'>
-                            <button onClick={handleCollapseCode} title="Expand/Collapse">
-                                {/* <img src={ssIcon} className='icon' /> */}
-                                Collapse code
+                            <button onClick={() => { navigate('/mypage') }} title="Go to user page">
+                                <img src={homeIcon} className='icon' />
+
                             </button>
-                            <button onClick={handleCollapseScene} title="Expand/Collapse">
-                                {/* <img src={ssIcon} className='icon' /> */}
-                                Collapse scene
+                            <button onClick={handleCollapseCode} title="Expand/collapse code section">
+                                <img src={sideBarIcon} className='icon' />
+                                {/* Collapse code */}
+                            </button>
+                            <button onClick={handleCollapseScene} title="Expand/collapse Three.js section">
+                                <img src={bottomBarIcon} className='icon' />
+                                {/* Collapse scene */}
                             </button>
                             <button onClick={captureScreenshot} title="Take screenshot of ThreeJS window">
                                 <img src={ssIcon} className='icon' />

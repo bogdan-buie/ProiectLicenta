@@ -2,12 +2,12 @@ import React, { useRef, useEffect, useState } from 'react';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
-
 import { MTLLoader } from 'three/addons/loaders/MTLLoader'
 import { FileLoader } from 'three/src/loaders/FileLoader';
 const ThreeScene = (props) => {
 
     const [dimension, setDimension] = useState(props.dimension);
+    const [code, setCode] = useState(props.code);
     const sceneRef = useRef(null);
     var consoleMessages = [];
 
@@ -22,7 +22,7 @@ const ThreeScene = (props) => {
 
 
     useEffect(() => {
-        const threeCode = props.code;
+        // const threeCode = props.code;
         setDimension(props.dimension);
         console.log(dimension);
         // Curățăm toți copiii din div
@@ -42,7 +42,7 @@ const ThreeScene = (props) => {
 
         // Executăm codul Three.js furnizat în props
         try {
-            const threeCodeFunction = new Function('THREE', 'OBJLoader', 'MTLLoader', 'FileLoader', 'sceneRef', 'OrbitControls', 'height', 'width', threeCode);
+            const threeCodeFunction = new Function('THREE', 'OBJLoader', 'MTLLoader', 'FileLoader', 'sceneRef', 'OrbitControls', 'height', 'width', code);
             threeCodeFunction(THREE, OBJLoader, MTLLoader, FileLoader, sceneRef, OrbitControls, dimension.height, dimension.width);
 
 

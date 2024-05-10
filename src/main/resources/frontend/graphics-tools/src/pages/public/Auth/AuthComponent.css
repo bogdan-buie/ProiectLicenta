@@ -19,6 +19,7 @@
 }
 
 .auth-container .auth-form {
+    width: calc(100%-20px);
     display: flex;
     flex-direction: column;
     margin-right: 20px;
@@ -48,14 +49,27 @@ input[type="email"] {
     border-radius: 4px;
 }
 
-.auth-container button {
-    padding: 10px 10px 10px 10px;
-    width: 100%;
+
+.container .auth-container .auth-form .btnSection {
+    padding-left: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    /* Adaugă un spațiu între buton și restul conținutului */
+}
+
+.container .auth-container .auth-form button {
+    padding: 10px 20px 10px 20px;
+    width: fit-content;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.container .auth-container .auth-form p {
+    margin: 0px 0px 10px 0px;
 }
 
 .auth-container button:hover {
