@@ -1,0 +1,34 @@
+.fileCard {
+    height: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: border-color 0.9s;
+    margin: 5px;
+    color: #000000;
+    /* background-color: #ffffff; */
+    background-color: #E0ECFE;
+    border-radius: 5px;
+}
+
+.fileCard:hover {
+    border-color: #007bff;
+    background-color: #c5dcff;
+}
+
+.fileCard .deleteButton {
+    display: none;
+    background-color: #5c5ee2;
+    color: #ffffff;
+    border: none;
+    padding: 4px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.fileCard:hover .deleteButton {
+    display: block;
+    background-color: #dc3545;
+}

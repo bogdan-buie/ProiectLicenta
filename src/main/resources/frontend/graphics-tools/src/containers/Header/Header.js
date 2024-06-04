@@ -49,7 +49,7 @@ function Header() {
                         <img src={userImage} className="userImage" onClick={toggleMenu} />
                         {isMenuOpen && ( // Verificăm dacă meniul este deschis și afișăm conținutul meniului dacă da
                             <div className="dropdownContent">
-                                <Link to="/user/profile/edit">Profile</Link>
+                                <Link to="/user/profile/edit">Edit profile</Link>
                                 <Link to="/mypage">User page</Link>
                                 <span onClick={handleLogout}>Logout</span>
                             </div>

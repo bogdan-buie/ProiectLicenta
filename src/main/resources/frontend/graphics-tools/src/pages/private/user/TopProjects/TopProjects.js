@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { useNavigate } from 'react-router-dom';
 import { request } from '../../../../utils/axios_helper';
+import './TopProjects.css';
 
 export default function TopProjects() {
     let navigate = useNavigate();
@@ -66,7 +67,7 @@ export default function TopProjects() {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Top Projects',
+                            text: '',
                             fontSize: 30
                         }
                     },
@@ -95,8 +96,20 @@ export default function TopProjects() {
     };
 
     return (
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <canvas ref={chartContainer} />
+        <div className='container'>
+
+            <div className='centeredContainer'>
+                <h1>Top Projects</h1>
+                <p>Explore the most appreciated projects by our community. This histogram showcases the top-rated and most frequently used projects
+                    by other users. Dive in to see what's trending and find inspiration for your own creations.
+                </p>
+                <div style={{ height: '90%', margin: '0 auto' }}>
+                    <canvas ref={chartContainer} />
+                </div>
+            </div>
+
         </div>
+
+
     );
 }

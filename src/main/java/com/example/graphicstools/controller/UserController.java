@@ -1,8 +1,6 @@
 package com.example.graphicstools.controller;
 
 import com.example.graphicstools.dto.ChangePassword;
-import com.example.graphicstools.dto.LoginResponse;
-import com.example.graphicstools.dto.UserCredentials;
 import com.example.graphicstools.model.User;
 import com.example.graphicstools.service.UserService;
 import org.springframework.http.HttpStatus;

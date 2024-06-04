@@ -47,7 +47,7 @@ public class CodeController {
     }
 
     @DeleteMapping(path = "delete/filename={name}")
-    public String update(@PathVariable String name) {
+    public String delete(@PathVariable String name) {
         return codeService.deleteFile(name);
     }
 }

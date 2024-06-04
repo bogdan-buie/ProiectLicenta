@@ -1,27 +1,37 @@
 package com.example.graphicstools.controller;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
+import com.example.graphicstools.dto.ModelUploadResponse;
+import com.example.graphicstools.service.ModelsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 @Controller
-@RequestMapping("/api/v1/public/models")
+@RequestMapping("/api/v1/models")
 public class ModelController {
+    private final ModelsService modelService;
 
-    @GetMapping
-    public ResponseEntity<byte[]> getModel(@RequestParam String fileName) throws IOException {
-        Resource resource = new ClassPathResource("models/" + fileName);
-        InputStream inputStream = resource.getInputStream();
-        byte[] bytes = inputStream.readAllBytes();
-        return ResponseEntity.ok().body(bytes);
+    public ModelController(ModelsService modelProjectService) {
+        this.modelService = modelProjectService;
     }
+
+//    @GetMapping
+//    public ResponseEntity<byte[]> getModel(@RequestParam String fileName) throws IOException {
+//        Resource resource = new ClassPathResource("models/" + fileName);
+//        InputStream inputStream = resource.getInputStream();
+//        byte[] bytes = inputStream.readAllBytes();
+//        return ResponseEntity.ok().body(bytes);
+//    }
+    @PostMapping(path = "/upload")
+    public ResponseEntity<ModelUploadResponse> upload(@RequestParam("file") MultipartFile multipartFile) {
+        ModelUploadResponse response = modelService.upload(multipartFile);
+        return ResponseEntity.ok().body(response);
+    }
+    @DeleteMapping(path = "/delete/{name}")
+    public String delete(@PathVariable String name) {
+        return modelService.deleteFile(name);
+    }
+
 }

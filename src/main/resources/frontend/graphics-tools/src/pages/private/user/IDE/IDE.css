@@ -28,18 +28,22 @@
     text-align: left;
     width: 100%;
     height: 100%;
+    /* background-color: #E0ECFE; */
+    background-color: #ffffff;
 
 }
 
 .IDE .projectDetailsBar {
     display: flex;
     width: 100%;
+    min-width: 25px;
     height: 5%;
     align-items: center;
 
-    background: radial-gradient(circle at 20% center,
-            rgb(44, 8, 18) 0%,
-            #1F2836 100%);
+    /* background: radial-gradient(circle at 20% center,
+            rgb(40, 0, 11) 0%,
+            #111827 100%); */
+    background-color: #111827;
     box-shadow: rgba(0, 0, 0, 0.5) 0px -50px 36px -28px inset;
 
     /* background-color: #1F2836; */

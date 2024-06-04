@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './ExplorePage.css';
 import ProjectCard from '../../../../components/ProjectCard/ProjectCard';
+import ProjectCard2 from '../../../../components/ProjectCard/ProjectCard2';
 import { request, getUserId } from '../../../../utils/axios_helper';
+import { Link } from 'react-router-dom';
 export default function ExplorePage() {
     const [keyword, setKeyword] = useState('');
     const [projects, setProjects] = useState([]);
@@ -73,16 +75,33 @@ export default function ExplorePage() {
                     required
                 />
                 <button onClick={searchProjects}>Search</button>
+                <Link to={`/top-projects`}>
+                    <button >See top-projects</button>
+                </Link>
 
             </div>
-
+            {/* 
             {projects.length > 0 ? (
                 projects.map(project => (
                     <ProjectCard project={project} key={project.id} status="public" />
                 ))
             ) : (
                 <p>No projects found.</p>
-            )}
+            )} */}
+            <div className='projectsList'>
+                {
+                    projects.length ? (
+                        <div className="projectGrid">
+                            {projects.map(project => (
+                                <ProjectCard2 project={project} key={project.id} status="public" />
+                            ))}
+                        </div>
+                    ) : (
+                        <p> No projects found </p>
+                    )
+                }
+
+            </div>
 
         </div>
     )

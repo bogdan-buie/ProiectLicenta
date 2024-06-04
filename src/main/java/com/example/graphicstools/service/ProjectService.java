@@ -147,76 +147,6 @@ public class ProjectService {
 
         return projects;
     }
-//    public List<Project> searchPublicProjects(String searchKey) {
-//        System.out.println(searchKey);
-//        List<Project> projects = new ArrayList<>();
-//
-//        try {
-//            CollectionReference projectsRef = db.collection(COLLECTION_NAME);
-//
-//// Interogare Firestore pentru proiectele publice care conțin cheia de căutare în titlu
-//            Query titleQuery = projectsRef
-//                    .whereEqualTo("status", "public")
-//                    .orderBy("name")
-//                    .startAt(searchKey)
-//                    .endAt(searchKey + "\uf8ff");
-//
-//            ApiFuture<QuerySnapshot> titleQuerySnapshot = titleQuery.get();
-//
-//// Obținerea rezultatelor interogării pentru titlu
-//            QuerySnapshot titleQueryResult = titleQuerySnapshot.get();
-//            for (QueryDocumentSnapshot document : titleQueryResult) {
-//                Project project = document.toObject(Project.class);
-//                projects.add(project);
-//                System.out.println("Proiect găsit: " + project.getName()); // Afișăm titlul proiectului găsit
-//            }
-//
-//
-//            // Interogare Firestore pentru proiectele publice care conțin cheia de căutare în descriere
-//            Query descriptionQuery = projectsRef
-//                    .whereEqualTo("status", "public")
-//                    .whereGreaterThanOrEqualTo("description", searchKey)
-//                    .whereLessThanOrEqualTo("description", searchKey + "\uf8ff")
-//                    .orderBy("description");
-//            ApiFuture<QuerySnapshot> descriptionQuerySnapshot = descriptionQuery.get();
-//
-//            // Obținerea rezultatelor interogării pentru descriere și adăugarea lor în lista de proiecte
-//            QuerySnapshot descriptionQueryResult = descriptionQuerySnapshot.get();
-//            for (QueryDocumentSnapshot document : descriptionQueryResult) {
-//                // Verificați dacă proiectul este deja în listă pentru a evita duplicarea
-//                if (!projects.contains(document.toObject(Project.class))) {
-//                    projects.add(document.toObject(Project.class));
-//                }
-//            }
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(projects.size());
-//        return projects;
-//    }
-
-    public UserProjectsInfo getUserProjectsInfo(String userId) throws Exception {
-        User user = userService.getUser(userId);
-        List<Project> myProjects = this.getUserProjects(userId);
-        int totalProjects = myProjects.size();
-        int totalGradedProjects = 0;
-        for (Project p : myProjects) {
-            if (p.getGrade() != 0) {
-                totalGradedProjects++;
-            }
-        }
-        UserProjectsInfo userProjectsInfo = new UserProjectsInfo();
-        userProjectsInfo.setUserId(userId);
-        userProjectsInfo.setEmail(user.getEmail());
-        userProjectsInfo.setLevel(user.getLevel());
-        userProjectsInfo.setTotalProjects(totalProjects);
-        userProjectsInfo.setTotalGradedProjects(totalGradedProjects);
-        userProjectsInfo.setTotalUngradedProjects(totalProjects - totalGradedProjects);
-
-        return userProjectsInfo;
-    }
-
     public List<Image_Project> getProjectImages(String idProject) throws ExecutionException, InterruptedException {
         Query query = db.collection("image_project").whereEqualTo("idProject", idProject);
         ApiFuture<QuerySnapshot> querySnapshotApiFuture = query.get();
@@ -288,7 +218,7 @@ public class ProjectService {
             importsNr++;
             project.setImportsNr(importsNr);
             ApiFuture<WriteResult> collectionApifuture = db.collection(COLLECTION_NAME).document(id).set(project);
-            return new ResponseEntity<>("Project updated with success", HttpStatus.OK);
+            return new ResponseEntity<>("Imports number updated with success", HttpStatus.OK);
         }
     }
 

@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import CodeEditor from '../../../../components/CodeEditor/CodeEditor'
 import ThreeScene from '../../../../components/ThreeScene/ThreeScene';
 import Console from '../../../../components/Console/Console';
+import Console2 from '../../../../components/Console/Console2';
 import "./IDE.css";
+import { downloadZIP } from '../../../../utils/DownloadProjectUtil';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { request, request2, getToken, getUserId } from '../../../../utils/axios_helper';
@@ -40,13 +42,14 @@ const IDE = () => {
     const [authorizedToView, setAuthorizedToView] = useState(false);
     const [authorizedToEdit, setAuthorizedToEdit] = useState(false);
     const [connectedUserID, setConnectedUserID] = useState();// id-ul utilizatorului conectat
+    const [modelProject, setModelProject] = useState([]);
 
     const { id } = useParams();
     useEffect(() => {
         loadProject();
         setConnectedUserID(getUserId());
         setParentDimensions({ width: window.innerWidth * 0.5, height: window.innerHeight * 0.8 });
-        console.log(parentDimensions);
+        // console.log(parentDimensions);
     }, []);
     useEffect(() => {
         setTimeout(updateParentDimensions, 10);
@@ -59,7 +62,10 @@ const IDE = () => {
 
     useEffect(() => {
         if (project) {
-            getCode();
+            {
+                getCode();
+                loadModelProject();
+            }
         }
     }, [project]);
 
@@ -69,7 +75,7 @@ const IDE = () => {
         if (parentElement) {
             rect = parentElement.getBoundingClientRect();
             setParentDimensions({ width: rect.width, height: rect.height });
-            console.log(parentDimensions);
+            // console.log(parentDimensions);
         }
 
         setShowThreeScene(false);
@@ -101,6 +107,22 @@ const IDE = () => {
 
         }
         setTimeout(updateParentDimensions, 10);
+    }
+    const loadModelProject = async () => {
+        request(
+            "GET",
+            `/modelproject/get/${id}`,
+            {}
+        ).then(
+            (response) => {
+                setModelProject(response.data);
+                // console.log(response.data);
+
+            }).catch(
+                (error) => {
+                    console.log(error);
+                }
+            );
     }
     const checkIfUserIsAuthorized = () => {
         console.log(connectedUserID + " " + project.id)
@@ -253,7 +275,7 @@ const IDE = () => {
     useEffect(() => {
         if (image) {
             uploadImage();
-            handleDownload(); // Descărcăm imaginea
+            //handleDownload(); // anulare descarcare
         }
     }, [image]); // Va fi apelat doar când se schimbă variabila image
 
@@ -296,6 +318,10 @@ const IDE = () => {
         // Calling toast method by passing string
         toast(message);
     };
+
+    const downloadProject = () => {
+        downloadZIP(project, modelProject, editorData);
+    }
     return (
         <div>
             {loading ? (
@@ -304,9 +330,12 @@ const IDE = () => {
                 <div className='IDE'>
                     <div className='projectDetailsBar'>
                         <div className='leftSection'>
-                            <p className='projectName'>{project.name}</p>
+                            <p className='projectName' title="Title of this project" >{project.name} </p>
                         </div>
                         <div className='rightSection'>
+                            <button onClick={() => { downloadProject() }} title="Go to user page">
+                                Download
+                            </button>
                             <button onClick={() => { navigate('/mypage') }} title="Go to user page">
                                 <img src={homeIcon} className='icon' />
 
@@ -368,6 +397,8 @@ const IDE = () => {
                                                             code={codeForRun}
                                                             dimension={parentDimensions}
                                                             updateConsoleMessages={handleConsoleMessagesUpdate}
+                                                            modelProject={modelProject}
+                                                            id={id}
                                                         />
                                                     </div>
                                                 )}
@@ -380,7 +411,13 @@ const IDE = () => {
 
                                         }} />
                                         <Panel defaultSizePercentage={20}>
-                                            <Console consoleMessages={consoleMessages} />
+                                            {/* <Console consoleMessages={consoleMessages} /> */}
+                                            <Console2
+                                                consoleMessages={consoleMessages}
+                                                modelProject={modelProject}
+                                                projectId={id}
+                                                loadModelProject={loadModelProject} />
+
                                         </Panel>
                                     </div>
                                 </PanelGroup>

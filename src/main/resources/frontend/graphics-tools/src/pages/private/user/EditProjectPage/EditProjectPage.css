@@ -1,3 +1,10 @@
+.editProjectPageBackground {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E0ECFE;
+}
+
 .editProjectPageContainer {
     max-width: 800px;
     margin: 0 auto;
@@ -6,6 +13,7 @@
     margin-top: 20px;
     margin-bottom: 50px;
     border-radius: 10px;
+    background-color: white;
 }
 
 .editProjectPageContainer h1 {
@@ -16,12 +24,13 @@
 .editProjectPageContainer form {
     display: flex;
     flex-direction: column;
+
+    /* Centrează conținutul pe orizontală */
 }
 
 .editProjectPageContainer label {
     margin-bottom: 5px;
 }
-
 
 .editProjectPageContainer textarea#description {
     height: 200px;
@@ -61,8 +70,7 @@
     position: absolute;
     top: 5px;
     right: 5px;
-
-    opacity: 0.5;
+    opacity: 0;
     background-color: red;
     color: white;
     border: none;
@@ -73,23 +81,35 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 0.3s ease;
 }
 
-.editProjectPageContainer .imageItem button:hover {
+.editProjectPageContainer .imageItem:hover button {
     opacity: 1;
 }
 
 .editProjectPageContainer button[type="submit"] {
-    width: 100%;
-    padding: 10px;
+    width: auto;
+    /* Setează lățimea automată pentru a se ajusta la conținut */
+    padding: 10px 20px;
+    /* Ajustează padding-ul pentru o prezentare mai bună */
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 20px;
+    /* Adaugă un spațiu deasupra butonului */
 }
 
 .editProjectPageContainer button[type="submit"]:hover {
     background-color: #0056b3;
+}
+
+
+.editProjectPageContainer .buttonSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

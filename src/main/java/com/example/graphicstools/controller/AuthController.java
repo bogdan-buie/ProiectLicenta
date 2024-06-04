@@ -1,7 +1,6 @@
 package com.example.graphicstools.controller;
 
 import com.example.graphicstools.dto.AuthResponse;
-import com.example.graphicstools.dto.LoginResponse;
 import com.example.graphicstools.dto.UserCredentials;
 import com.example.graphicstools.model.User;
 import com.example.graphicstools.security.JwtService;

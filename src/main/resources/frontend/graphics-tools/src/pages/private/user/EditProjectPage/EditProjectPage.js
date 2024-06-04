@@ -135,38 +135,43 @@ const EditProjectPage = () => {
         toast(message);
     };
     return (
-        <div className="editProjectPageContainer">
-            {loading ? (
-                <div className='loadingMessage'>Loading...</div>
-            ) : authorizedToEdit ? (
-                <div>
-                    <h1>Edit Project</h1>
-                    <form>
-                        <label>Title:</label>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        <label>Description:</label>
-                        <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
-                        <div>
-                            <label>Status: </label>
-                            <button type="button" onClick={toggleStatus}>{status}</button>
-                        </div>
-                        <h2>Images:</h2>
-                        <div className="imageList">
-                            {images.length > 0 ? (images.map(image => (
-                                <div key={image.id} className="imageItem">
-                                    <img src={image.link} alt={image.alt} />
-                                    <button onClick={() => handleDeleteImage(image.imageName)}>Delete</button>
-                                </div>
-                            ))) : (
-                                <p>No images uploaded yet.</p>
-                            )}
-                        </div>
-                        <button type="submit" onClick={handleUpdate}>Update</button>
-                    </form>
-                </div>
-            ) : (
-                <Unauthorized />
-            )}
+        <div className='editProjectPageBackground'>
+            <div className="editProjectPageContainer">
+                {loading ? (
+                    <div className='loadingMessage'>Loading...</div>
+                ) : authorizedToEdit ? (
+                    <div>
+                        <h1>Edit project page</h1>
+                        <form>
+                            <label>Title:</label>
+                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <label>Description:</label>
+                            <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                            <div>
+                                <label>Status: </label>
+                                <button type="button" onClick={toggleStatus}>{status}</button>
+                            </div>
+                            <h2>Images:</h2>
+                            <div className="imageList">
+                                {images.length > 0 ? (images.map(image => (
+                                    <div key={image.id} className="imageItem">
+                                        <img src={image.link} alt={image.alt} />
+                                        <button onClick={() => handleDeleteImage(image.imageName)}>Delete</button>
+                                    </div>
+                                ))) : (
+                                    <p>No images uploaded yet.</p>
+                                )}
+                            </div>
+                            <div className='buttonSection'>
+                                <button type="submit" onClick={handleUpdate}>Update</button>
+                            </div>
+
+                        </form>
+                    </div>
+                ) : (
+                    <Unauthorized />
+                )}
+            </div>
         </div>
     );
 }

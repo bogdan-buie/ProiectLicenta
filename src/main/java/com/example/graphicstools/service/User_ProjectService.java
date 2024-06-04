@@ -26,10 +26,7 @@ public class User_ProjectService {
         return new ResponseEntity<>("Document added with success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> deleteUserProjectById(String id) throws Exception{
-        ApiFuture<WriteResult> collectionApifuture = db.collection(COLLECTION_NAME).document(id).delete();
-        return new ResponseEntity<>("Document deleted with success", HttpStatus.OK);
-    }
+
     public ResponseEntity<String> deleteUserProjectByProjectId(String projectId) throws Exception{
         User_Project myUP = findByProjectId(projectId);
         if(myUP == null){

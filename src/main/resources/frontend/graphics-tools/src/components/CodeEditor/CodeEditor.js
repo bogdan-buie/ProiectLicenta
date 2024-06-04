@@ -26,7 +26,7 @@ const CodeEditor = (props) => {
             <Editor
                 width="100%"
                 height="100%"
-                theme='vs-dark'
+                theme='vs-light'
                 defaultLanguage='javascript'
                 onChange={handleChange}
                 value={code}

@@ -8,25 +8,34 @@ export default function UserPage() {
     const [keyword, setKeyword] = useState('');
     const [user, setUser] = useState('');
     const [projects, setProjects] = useState([]);
-    const [filteredProjects, setFilteredProjects] = useState([]); // Starea pentru proiectele filtrate
-    const [sortOrder, setSortOrder] = useState('newest'); // Starea pentru ordinea de sortare
+    const [filteredProjects, setFilteredProjects] = useState([]);
+    const [sortOrder, setSortOrder] = useState('newest');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Filtrare proiecte când se schimbă cuvântul cheie
+        console.log("useEffect - keyword or projects changed");
         filterProjects();
     }, [keyword, projects]);
 
     useEffect(() => {
+        console.log("useEffect - component mounted");
         loadUserDetails();
-        loadProjects();
     }, []);
 
+    useEffect(() => {
+        console.log("useEffect - user changed");
+        if (user) {
+            loadProjects();
+        }
+    }, [user]);
+
     const handleProjectDeleted = () => {
-        loadProjects(); // Actualizarea listei de proiecte după ștergere
+        console.log("handleProjectDeleted - project deleted");
+        loadProjects();
     }
 
     const loadUserDetails = async () => {
+        console.log("loadUserDetails - fetching user details");
         try {
             const response = await request("GET", `/user/get/${getUserId()}`, {});
             setUser(response.data);
@@ -36,6 +45,7 @@ export default function UserPage() {
     }
 
     const loadProjects = async () => {
+        console.log("loadProjects - fetching projects");
         try {
             const response = await request("GET", `/project/get/user=${getUserId()}`, {});
             if (response.data) {
@@ -48,16 +58,18 @@ export default function UserPage() {
     }
 
     const filterProjects = () => {
-        setLoading(true); // Setează loading la true când începe filtrarea
+        console.log("filterProjects - filtering projects");
+        setLoading(true);
         const filtered = projects.filter(project => {
             return project.name.toLowerCase().includes(keyword.toLowerCase()) ||
                 project.description.toLowerCase().includes(keyword.toLowerCase());
         });
         setFilteredProjects(filtered);
-        setTimeout(() => setLoading(false), 20); // Setează loading la false după 20ms
+        setTimeout(() => setLoading(false), 20);
     }
 
     const reorderProjects = () => {
+        console.log("reorderProjects - reordering projects");
         let sortedProjects;
         if (sortOrder === 'oldest') {
             sortedProjects = projects.sort((a, b) => b.lastModification - a.lastModification);
@@ -68,6 +80,7 @@ export default function UserPage() {
     }
 
     const toggleSortOrder = () => {
+        console.log("toggleSortOrder - toggling sort order");
         setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest');
         reorderProjects();
     }
@@ -80,7 +93,6 @@ export default function UserPage() {
 
             <div className='searchBar'>
                 <input
-
                     type="text"
                     id="keywordInput"
                     value={keyword}
@@ -105,10 +117,9 @@ export default function UserPage() {
                             ))}
                         </div>
                     ) : (
-                        <p>No projects found </p>
+                        <p>No projects found</p>
                     )
                 )}
-
             </div>
         </div>
     )

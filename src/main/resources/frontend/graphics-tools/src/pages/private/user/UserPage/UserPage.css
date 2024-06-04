@@ -3,17 +3,17 @@
     min-height: 90%;
     height: fit-content;
 
-    /* background-color: #18181B; */
-    background-color: #070F2B;
-    /* background: linear-gradient(rgb(169, 232, 245) 0%, rgba(251, 251, 251, 0.1) 100%), linear-gradient(90deg, #52c0ff, #8d5acd); */
+    /* background-color: #E0ECFE; */
+    /* background-color: #F3F4F6; */
+    background: linear-gradient(rgb(169, 232, 245) 0%, rgba(251, 251, 251, 0.1) 100%), linear-gradient(90deg, #52c0ff, #8d5acd);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .userInfo {
-    /* background-color: #252426; */
-    background-color: #1B1A55;
+    background-color: #ffffff;
+    /* background-color: #1F2937; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,20 +21,21 @@
     height: fit-content;
     width: 90%;
     padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    box-shadow: rgba(0.3, 0.3, 0.3, 0.3) 0px 4px 12px;
     border-radius: 4px;
 }
 
 .userInfo h1 {
     margin: 0;
-    color: snow;
+    color: rgb(0, 0, 0);
 }
 
 .searchBar {
-    /* background-color: #252426; */
-    background-color: #1B1A55;
+    background-color: #ffffff;
+    /* background-color: #5494da; */
+    /* background-color: #1F2937; */
     padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0.3, 0.3, 0.3, 0.3) 0px 4px 12px;
     border-radius: 5px;
     margin-bottom: 10px;
     width: 90%;
@@ -48,14 +49,20 @@
     border: 0px;
     border-radius: 4px;
     margin: 0 auto;
-    /* background-color: #3B3B3D; */
-    background-color: #535C91;
-    color: snow;
+    background-color: #ebebff;
+    /* background-color: #4c6588; */
+    /* background-color: #b1bed1; */
+    border: 1px solid #b9bdc0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px;
+    color: rgb(0, 0, 0);
 }
 
+
+
 .searchBar input[type="text"]::placeholder {
-    color: snow;
+    color: rgb(153, 153, 153);
     opacity: 1;
+
     /* Firefox */
 }
 
@@ -63,8 +70,9 @@
     padding: 7px;
     margin-left: 20px;
     width: fit-content;
-    /* background-color: #007bff; */
-    background-color: #00337C;
+    background-color: #5c5ee2;
+    /* background-color: #00337C; */
+    /* background-color: #e0e7ff; */
     /* border: 1px solid rgb(61, 61, 61); */
     color: #fff;
     border: none;
@@ -73,7 +81,8 @@
 }
 
 .searchBar button:hover {
-    background-color: #0056b3;
+    background-color: #696bfe;
+
 }
 
 .projectsList {

@@ -2,21 +2,25 @@
     height: 400px;
     width: 400px;
     /* background-color: #252426; */
-    background-color: #1B1A55;
-    border: 1px solid rgb(61, 61, 61);
-    box-shadow: rgb(0, 0, 0) 0px 5px 15px;
+    /* background-color: #111827; */
+    background-color: #F3F4F6;
+    /* background: radial-gradient(circle,
+            rgba(138, 84, 107, 0) 0%,
+            #111827 100%); */
+    /* border: 1px solid rgb(61, 61, 61); */
+    box-shadow: rgba(0.3, 0.3, 0.3, 0.3) 0px 4px 12px;
     border-radius: 10px;
     margin-bottom: 10px;
     overflow: hidden;
 }
 
-.projectCard2 .info {
+.projectCard2 .infoP {
     padding: 10px 10px 10px 20px;
 }
 
-.projectCard2 .info h3 {
+.projectCard2 .infoP h3 {
     margin: 0px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     text-decoration: none;
 }
 

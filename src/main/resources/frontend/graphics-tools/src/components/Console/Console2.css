@@ -1,0 +1,86 @@
+.consoleBar {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+    /* background: radial-gradient(circle at 80% center,
+            rgb(44, 8, 18) 0%,
+            #1F2836 100%); */
+    background-color: #111827;
+
+}
+
+
+.consoleBar::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.consoleBar li {
+    margin-right: 10px;
+    float: left;
+    cursor: pointer;
+    padding: 2px 10px 2px 10px;
+    border-bottom: 2px solid transparent;
+    border-radius: 5px;
+    transition: border-bottom-color 0.3s ease;
+    background-color: rgb(115, 107, 97);
+}
+
+.consoleBar li:hover {
+    border-bottom-color: #007bff;
+}
+
+.consoleBar .react-tabs__tab--selected {
+    background-color: antiquewhite;
+    /* border-bottom-color: #007bff !important; */
+}
+
+.consoleBar h2 {
+    margin: 0;
+
+}
+
+.console {
+    padding: 5px;
+    background-color: #ffffff;
+    overflow-y: auto;
+    /* Permite derularea verticală */
+    max-height: 100%;
+    /* Setează înălțimea maximă la 100% din containerul părinte */
+}
+
+.consoleError {
+    color: #dc3545;
+}
+
+/* Style pentru butonul de curățare a consolei */
+.console .clearConsoleButton {
+    background-color: red;
+    border: none;
+    cursor: pointer;
+    color: black;
+}
+
+.clearConsoleButton img {
+    width: 20px;
+    height: auto;
+}
+
+.clearConsoleButton:hover img {
+    filter: brightness(50%);
+}
+
+.objectViewer .addButton {
+    margin-top: 5px;
+    margin-left: 5px;
+    color: #111827;
+    background-color: #007bff;
+
+}
+
+.objectViewer .addButton:hover {
+
+    background-color: #46a0ff;
+
+}

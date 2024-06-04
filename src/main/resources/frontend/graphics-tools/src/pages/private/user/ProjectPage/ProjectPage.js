@@ -276,10 +276,10 @@ const ProjectPage = () => {
 
                     </div>
 
-                    <div className='info'>
+                    {/* <div className='info'>
                         <label htmlFor="grade">Grade: {project.grade}</label>
+                    </div> */}
 
-                    </div>
                     <div className='info'>
                         <label htmlFor="status">Status: {project.status}</label>
                     </div>
@@ -303,7 +303,7 @@ const ProjectPage = () => {
 
                     {data.length > 0 && (
                         <div className='info'>
-                            <label>Image gallery</label>
+                            <label>Image gallery:</label>
 
                         </div>
                     )}
@@ -340,7 +340,7 @@ const ProjectPage = () => {
                         </div>
                     )}
                     <div className='info'>
-                        <label htmlFor="description">Source code</label>
+                        <label htmlFor="description">Source code:</label>
                         <CopyBlock
                             options={{ showClipboard: true }}
                             text={code}

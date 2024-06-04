@@ -17,13 +17,13 @@
     align-items: center;
     margin: 10px 0px 10px 0px;
     height: fit-content;
-    width: 80%;
+    width: 90%;
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     border-radius: 4px;
 }
 
-.explorePage .userInfo h1 {
+.explorePage .info h1 {
     margin: 0;
 }
 
@@ -45,7 +45,7 @@
     border-radius: 5px;
     /* margin-top: 20px; */
     margin-bottom: 10px;
-    width: 80%;
+    width: 90%;
     padding: 10px;
 }
 
@@ -56,6 +56,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 0 auto;
+    background-color: #ebebff;
 
 }
 
@@ -74,4 +75,14 @@
 
 .explorePage button:hover {
     background-color: #0056b3;
+}
+
+.projectGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+    /* Afișează cât mai multe coloane posibil, fiecare de 350px, dar nu mai mici de 1fr */
+    gap: 20px;
+    /* Spațiul între proiecte */
+    justify-items: center;
+    /* Centrare pe axa orizontală */
 }

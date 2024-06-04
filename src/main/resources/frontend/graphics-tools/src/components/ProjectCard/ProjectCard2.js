@@ -7,6 +7,7 @@ export default function ProjectCard2({ project, status }) {
     const [images_project, setImagesProjects] = useState([]);
 
     useEffect(() => {
+        console.log("Project Card")
         getImagesLink();
     }, []);
 
@@ -37,7 +38,7 @@ export default function ProjectCard2({ project, status }) {
                     </Link>
                 )}
             </div>
-            <div className="info">
+            <div className="infoP">
                 <Link to={`/projectPage/${project.id}`} style={{ textDecoration: 'none' }}>
                     <h3>{project.name}</h3>
                 </Link>

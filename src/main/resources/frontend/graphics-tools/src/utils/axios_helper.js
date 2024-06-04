@@ -22,8 +22,9 @@ export const setToken = (token) => {
 };
 
 
-axios.defaults.baseURL = "http://localhost:8080/api/v1";
-// axios.defaults.baseURL = "http://192.168.100.46:8080/api/v1";
+// axios.defaults.baseURL = "http://localhost:8080/api/v1";
+axios.defaults.baseURL = "http://192.168.100.46:8080/api/v1";
+//axios.defaults.baseURL = "http://192.168.37.174:8080/api/v1";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // header cu token
