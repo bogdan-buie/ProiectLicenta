@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import Header2 from '../../../containers/Header2/Header2';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import './Home.css';
 
 const Home = () => {
@@ -127,6 +130,20 @@ const Home = () => {
 
         window.addEventListener('resize', handleResize);
 
+        // Adăugăm textul "Explore projects din aceasta galaxie"
+        const fontLoader = new FontLoader();
+        fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+            const textGeometry = new TextGeometry('Explore projects from this solar system', {
+                font: font,
+                size: 4,
+                height: 0.2,
+            });
+            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            textMesh.position.set(-20, 0, -50); // Poziționăm textul după cum dorim
+            scene.add(textMesh);
+        });
+
         return () => {
             window.removeEventListener('resize', handleResize);
             renderer.dispose();
@@ -135,17 +152,17 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="home-container">
-            <div className="header">
-                <h1>Welcome to ThreeJS IDE</h1>
-                <p>Create, Share, and Explore 3D projects with ThreeJS</p>
+        <div style={{ width: '100%', height: '100%' }}>
+            <Header2 />
+            <div className="home-container">
+                <div className="threejs-container" ref={canvasRef} />
+                <div className="info-section">
+                    <h2>About Our App</h2>
+                    <p>info</p>
+                </div>
             </div>
-            <div className="threejs-container" ref={canvasRef} />
-            <div className="info-section">
-                <h2>About Our App</h2>
-                <p>info</p>
-            </div>
-        </div>
+        </div >
+
     );
 };
 

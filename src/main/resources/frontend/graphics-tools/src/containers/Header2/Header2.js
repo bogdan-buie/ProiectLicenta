@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './Header.css';
+import './Header2.css';
 import { getUserId, getRole } from '../../utils/axios_helper';
 import { clearLocalStorage } from '../../utils/axios_helper';
 
 import userImage from '../../assets/image/user.png';
 
-function Header() {
+function Header2() {
     let navigate = useNavigate();
     const userId = getUserId(); // Obținem ID-ul de utilizator
     const role = getRole();
@@ -24,7 +24,7 @@ function Header() {
         // De asemenea, poți adăuga o redirecționare către pagina de login sau alte pagini după logout
     };
     return (
-        <div className='header'>
+        <div className='header2'>
             <div className='leftSection'>
                 <button>
                     <Link to={`/`}>
@@ -70,4 +70,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default Header2;

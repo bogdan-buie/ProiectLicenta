@@ -2,17 +2,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #ffffff; */
-    background-color: #E0ECFE;
+    background-color: #ffffff;
+
 }
 
 .addProject {
     width: 80%;
     max-width: 1000px;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     padding: 20px 20px 20px 20px;
-    background-color: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #E0ECFE;
+
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
     /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; */
     border-radius: 10px;
 }
@@ -34,7 +37,6 @@
 .addProject .form input[type="text"],
 .addProject .form textarea {
     width: calc(100% - 20px);
-    /* 20px este padding-ul pe care îl ai definit */
     padding: 10px;
 
     border: 1px solid #ccc;
@@ -45,7 +47,6 @@
 
 .addProject textarea {
     min-height: 100px;
-    /* Ajustează această valoare după preferințe */
     resize: vertical;
 }
 
@@ -54,21 +55,34 @@
     flex-direction: row;
     width: calc(100%-20px);
     height: fit-content;
-    background-color: #cfe6ff;
-    /* background-color: #ffffff; */
-    margin-top: 5px;
-    margin-bottom: 10px;
+    background-color: #93C5FD;
+
     border-radius: 10px;
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .addProject .column1 {
+    overflow: hidden;
     flex: 1;
     text-align: left;
     width: 50%;
     height: 100%;
     padding: 10px;
+}
+
+.addProject .column1 .descriptionTemplate {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #b9daf4;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .addProject .column2 {
@@ -79,11 +93,17 @@
     width: 50%;
     height: 100%;
     padding: 10px;
+    border-radius: 5px;
+}
+
+.addProject .button-container {
+    text-align: center;
+
 }
 
 .addProject button {
     padding: 10px 10px 10px 10px;
-    width: 100%;
+    width: fit-content;
     background-color: #007bff;
     color: #fff;
     border: none;

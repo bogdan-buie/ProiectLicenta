@@ -2,99 +2,81 @@
     width: 100%;
     min-height: 90%;
     height: fit-content;
-
-    /* background-color: #E0ECFE; */
-    /* background-color: #F3F4F6; */
-    background: linear-gradient(rgb(169, 232, 245) 0%, rgba(251, 251, 251, 0.1) 100%), linear-gradient(90deg, #52c0ff, #8d5acd);
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.userInfo {
-    background-color: #ffffff;
-    /* background-color: #1F2937; */
+.userPage .card {
+    background-color: #93C5FD;
+    /* background-color: #2e77ae; */
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.userPage .text-section {
+    justify-content: center;
+}
+
+.userPage .searchBar-section {
+    width: 80%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0px 10px 0px;
-    height: fit-content;
-    width: 90%;
-    padding: 10px;
-    box-shadow: rgba(0.3, 0.3, 0.3, 0.3) 0px 4px 12px;
-    border-radius: 4px;
+    flex-direction: row;
 }
 
-.userInfo h1 {
-    margin: 0;
-    color: rgb(0, 0, 0);
-}
-
-.searchBar {
-    background-color: #ffffff;
-    /* background-color: #5494da; */
-    /* background-color: #1F2937; */
-    padding: 10px;
-    box-shadow: rgba(0.3, 0.3, 0.3, 0.3) 0px 4px 12px;
+.searchBar-section input[type="text"] {
+    width: 70%;
+    height: 30px;
+    padding: 5px 5px 5px 10px;
+    border: 0;
     border-radius: 5px;
-    margin-bottom: 10px;
-    width: 90%;
-    padding: 10px;
-}
-
-.searchBar input[type="text"] {
-    width: 50%;
-    height: 20px;
-    padding: 5px;
-    border: 0px;
-    border-radius: 4px;
-    margin: 0 auto;
-    background-color: #ebebff;
-    /* background-color: #4c6588; */
-    /* background-color: #b1bed1; */
+    background-color: #E0ECFE;
     border: 1px solid #b9bdc0;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 3px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: rgb(0, 0, 0);
 }
 
-
-
-.searchBar input[type="text"]::placeholder {
+.searchBar-section input[type="text"]::placeholder {
     color: rgb(153, 153, 153);
     opacity: 1;
-
-    /* Firefox */
 }
 
-.searchBar button {
-    padding: 7px;
+.searchBar-section button {
+    padding: 10px;
     margin-left: 20px;
     width: fit-content;
-    background-color: #5c5ee2;
-    /* background-color: #00337C; */
-    /* background-color: #e0e7ff; */
-    /* border: 1px solid rgb(61, 61, 61); */
-    color: #fff;
+    height: 41px;
+    background-color: #007bff;
+    color: #000000;
     border: none;
-    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
     cursor: pointer;
+
 }
 
-.searchBar button:hover {
-    background-color: #696bfe;
 
+.searchBar-section button:hover {
+    background-color: #0056b3;
 }
 
 .projectsList {
-    width: 90%;
+    width: 80%;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background-color: #E0ECFE;
 }
 
 .projectGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-    /* Afișează cât mai multe coloane posibil, fiecare de 350px, dar nu mai mici de 1fr */
-    gap: 20px;
-    /* Spațiul între proiecte */
-    justify-items: center;
-    /* Centrare pe axa orizontală */
+    grid-template-columns: repeat(auto-fit, minmax(auto-fit, 2fr));
+    gap: 10px;
+    justify-content: center;
 }

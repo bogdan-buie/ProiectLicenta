@@ -1,0 +1,104 @@
+.header2 {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    height: 10%;
+    width: 100%;
+    background-color: #3e426c4c;
+}
+
+.header2 .leftSection {
+    flex: 1;
+    padding: 5px 10px 5px 30px;
+    width: max-content;
+
+    /* Facem acest div să crească pe toată lățimea disponibilă */
+}
+
+.header2 .rightSection {
+    flex: 1;
+    padding: 5px 30px 5px 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header2 button a {
+    text-decoration: none;
+    /* Elimină sublinierea */
+    color: inherit;
+    /* Păstrează culoarea butonului pentru link */
+}
+
+.header2 button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-size: 17px;
+    background-color: inherit;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.header2 button:hover {
+    background-color: #364051;
+}
+
+
+
+
+.header2 .userImage {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.header2 .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+.header2 .dropdownContent {
+    display: none;
+    position: absolute;
+    background-color: #FEFEFF;
+    min-width: 180px;
+
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    z-index: 1;
+    right: 0;
+    border-radius: 5px;
+    /* Așezăm dropdown-ul în partea dreaptă a containerului */
+}
+
+.header2 .dropdownContent a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+}
+
+.header2 .dropdownContent span {
+    color: black;
+    padding: 8px 16px;
+    display: block;
+    cursor: pointer;
+    /* Adăugăm pointer pentru a indica că este un element clicabil */
+    border-radius: 5px;
+}
+
+.header2 .dropdownContent a:hover {
+    background-color: #f3f4f6;
+}
+
+.header2 .dropdownContent span:hover {
+    background-color: #f3f4f6;
+}
+
+.header2 .dropdown:hover .dropdownContent {
+    display: block;
+}

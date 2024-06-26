@@ -261,6 +261,9 @@ const ProjectPage = () => {
                         )}
                         {authorizedToEdit && (
                             <>
+                                <Link to={`/editProject/${project.id}`}>
+                                    <button>Edit project code</button>
+                                </Link>
                                 <Link to={`/editProjectPage/${project.id}`}>
                                     <button>Edit project page</button>
                                 </Link>

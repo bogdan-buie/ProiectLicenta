@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Console2.css';
 import broomIcon from '../../../src/assets/image/broom.png';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
@@ -9,6 +9,7 @@ const Console2 = (props) => {
     const [consoleMessages, setConsoleMessages] = useState([]);
     const [modelProject, setModelProject] = useState([]);
     const [projectId, setProjectId] = useState();
+    const divRefConsole = useRef(null);
     useEffect(() => {
         setProjectId(props.projectId);
         console.log(projectId);
@@ -88,43 +89,51 @@ const Console2 = (props) => {
     }
 
     return (
-        <Tabs>
-            <TabList className='consoleBar'>
-                <Tab><h2>Console</h2></Tab>
-                <Tab><h2>3D Objects</h2></Tab>
+        <div className='console-main'>
+            <Tabs className='tab-container'>
 
-            </TabList>
+                <TabList className='consoleBar'>
+                    <Tab><h2>Console</h2></Tab>
+                    <Tab><h2>3D Objects</h2></Tab>
+                </TabList>
 
-            <TabPanel>
 
-                <div className='console'>
-                    <button className='clearConsoleButton' onClick={handleClearConsole}>
-                        Clear console
-                    </button>
-                    {consoleMessages.map((messageObject, index) => (
-                        <div key={index} className={messageObject.type === 'ERROR' ? 'consoleError' : ''}>
-                            {messageObject.message}
-                        </div>
-                    ))}
-                </div>
-            </TabPanel>
-            <TabPanel >
-                <div className="objectViewer">
-                    <div>
-                        <button onClick={handleOpenFileDialog} className='addButton'> + Add 3D Model</button>
+                <TabPanel>
+                    <div className='console'>
+                        <button className='clearConsoleButton' onClick={handleClearConsole}>
+                            Clear console
+                        </button>
+                        {consoleMessages.length > 0 &&
+                            <div className='console-container'>
+                                {consoleMessages.map((messageObject, index) => (
+                                    <div key={index} className={messageObject.type === 'ERROR' ? 'consoleError' : ''}>
+                                        {messageObject.message}
+                                    </div>
+                                ))}
+                            </div>}
+
+
                     </div>
-                    {modelProject.length > 0 ? (
-                        modelProject.map(obj => (
-                            <FileCard
-                                obj={obj}
-                                key={obj.id}
-                                loadModelProject={props.loadModelProject} />
-                        ))
-                    ) : (<p>Does not exist any 3D model</p>)}
-                </div>
+                </TabPanel>
+                <TabPanel >
+                    <div className="objectViewer">
+                        <div>
+                            <button onClick={handleOpenFileDialog} className='addButton'> + ADD 3D Model</button>
+                        </div>
+                        {modelProject.length > 0 ? (
+                            modelProject.map(obj => (
+                                <FileCard
+                                    obj={obj}
+                                    key={obj.id}
+                                    loadModelProject={props.loadModelProject} />
+                            ))
+                        ) : (<p>Does not exist any 3D model</p>)}
+                    </div>
 
-            </TabPanel>
-        </Tabs>
+                </TabPanel>
+            </Tabs>
+        </div >
+
     );
 };
 

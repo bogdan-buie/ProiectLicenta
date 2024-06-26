@@ -8,11 +8,13 @@ export default function ExplorePage() {
     const [keyword, setKeyword] = useState('');
     const [projects, setProjects] = useState([]);
     const [filteredProjects, setFilteredProjects] = useState([]); // Starea pentru proiectele filtrate
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         loadProjects();
     }, []);
 
     const loadProjects = async () => {
+        setLoading(true);
         request(
             "GET",
             `/project/get/newestPublicProjects/10`,
@@ -26,6 +28,7 @@ export default function ExplorePage() {
                         return b.lastModification - a.lastModification; // Sortare descrescătoare
                     });
                     setProjects(sortedProjects);
+                    setLoading(false);
                 }
 
             }).catch(
@@ -35,6 +38,7 @@ export default function ExplorePage() {
             );
     }
     const searchProjects = () => {
+        setLoading(true);
         request(
             "GET",
             `/project/get/key=${keyword}`,
@@ -49,6 +53,7 @@ export default function ExplorePage() {
                         return b.lastModification - a.lastModification; // Sortare descrescătoare
                     });
                     setProjects(sortedProjects);
+                    setLoading(false);
                 }
 
             }).catch(
@@ -61,36 +66,33 @@ export default function ExplorePage() {
 
     return (
         <div className='explorePage'>
-            <div className='info'>
-                <h1>Explore projects</h1>
+            <div className='card'>
+                <div className='text-section'>
+                    <h2>Explore projects of other users</h2>
+                </div>
 
+                <div className='searchBar-section'>
+                    <input
+                        type="text"
+                        id="keywordInput"
+                        value={keyword}
+                        placeholder='Search projects'
+                        onChange={(e) => setKeyword(e.target.value)}
+                        required
+                    />
+                    <button onClick={searchProjects}>Search</button>
+                    <Link to={`/top-projects`}>
+                        <button >See top-projects</button>
+                    </Link>
+
+
+                </div>
             </div>
 
-            <div className='searchBar'>
-                <input
-                    type="text"
-                    id="keywordInput"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    required
-                />
-                <button onClick={searchProjects}>Search</button>
-                <Link to={`/top-projects`}>
-                    <button >See top-projects</button>
-                </Link>
 
-            </div>
-            {/* 
-            {projects.length > 0 ? (
-                projects.map(project => (
-                    <ProjectCard project={project} key={project.id} status="public" />
-                ))
-            ) : (
-                <p>No projects found.</p>
-            )} */}
             <div className='projectsList'>
-                {
-                    projects.length ? (
+                {loading ? (<p>Loading</p>) : (
+                    projects.length > 0 ? (
                         <div className="projectGrid">
                             {projects.map(project => (
                                 <ProjectCard2 project={project} key={project.id} status="public" />
@@ -99,7 +101,7 @@ export default function ExplorePage() {
                     ) : (
                         <p> No projects found </p>
                     )
-                }
+                )}
 
             </div>
 

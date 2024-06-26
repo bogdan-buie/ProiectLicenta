@@ -68,8 +68,12 @@ const AuthComponent = () => {
                             }
 
                             navigate('/mypage');
-                            console.log(response.data);
+
                         }
+                        else {
+                            setMessage(response.data.message);
+                        }
+                        console.log(response.data);
                     }).catch(
                         (error) => {
                             console.log(error);

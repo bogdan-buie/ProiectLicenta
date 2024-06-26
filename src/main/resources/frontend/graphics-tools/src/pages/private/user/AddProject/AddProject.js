@@ -11,11 +11,16 @@ export default function AddProject() {
     let navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [description_template, setDescriptionTemplate] = useState('');
     const [selectedTemplate, setSelectedTemplate] = useState('');
     const [templateImage, setTemplateImage] = useState(null);
     useEffect(() => {
-        if (cubeImage)
+        if (cubeImage) {
             setTemplateImage(cubeImage);
+            setDescriptionTemplate(descriptions_template[0]);
+        }
+
+
     }, [cubeImage]);
 
     const handleSubmit = (event) => {
@@ -46,22 +51,26 @@ export default function AddProject() {
                 );
 
     };
-
+    const descriptions_template = [
+        "Cub iluminat de culoare galbenă, cu latura de o unitate",
+        "Sistemul de coordonate XYZ",
+        "Sistemul de coordonate XYZ împreună cu un grilaj cu latura de 20 unități",
+        "Descriere 3"];
     const handleTemplateSelect = (template) => {
         setSelectedTemplate(template);
         // Setează imaginea și textul corespunzător pentru fiecare template
         switch (template) {
             case 'template1':
                 setTemplateImage(cubeImage);
-
+                setDescriptionTemplate(descriptions_template[0]);
                 break;
             case 'template2':
                 setTemplateImage(axesImage);
-
+                setDescriptionTemplate(descriptions_template[1]);
                 break;
             case 'template3':
                 setTemplateImage(axesGridImage);
-
+                setDescriptionTemplate(descriptions_template[2]);
                 break;
             default:
                 setTemplateImage(null);
@@ -159,13 +168,19 @@ export default function AddProject() {
                                     <label htmlFor="template3">XYZ axes & grid</label>
                                 </div>
                             </div>
+                            <div className='descriptionTemplate'>
+                                <p>{description_template}</p>
+                            </div>
                         </div>
 
                         <div className='column2'>
                             {templateImage && <img src={templateImage} alt="Template Image" />}
                         </div>
                     </div>
-                    <button type="submit">Create project</button>
+                    <div className='button-container'>
+                        <button type="submit">Create project</button>
+                    </div>
+
                 </form>
             </div>
         </div>

@@ -25,6 +25,8 @@ import uploadIcon from '../../../../../src/assets/image/upload.png';
 import sideBarIcon from '../../../../../src/assets/image/side_bar.svg';
 import bottomBarIcon from '../../../../../src/assets/image/bottom_bar.svg';
 import homeIcon from '../../../../../src/assets/image/home.svg';
+import shuttle from '../../../../../src/assets/image/shuttle.png';
+import page from '../../../../../src/assets/image/page.png';
 const IDE = () => {
     const ref = useRef(null); // pt screenshot
     let navigate = useNavigate();
@@ -75,7 +77,7 @@ const IDE = () => {
         if (parentElement) {
             rect = parentElement.getBoundingClientRect();
             setParentDimensions({ width: rect.width, height: rect.height });
-            // console.log(parentDimensions);
+            console.log(parentDimensions);
         }
 
         setShowThreeScene(false);
@@ -333,24 +335,31 @@ const IDE = () => {
                             <p className='projectName' title="Title of this project" >{project.name} </p>
                         </div>
                         <div className='rightSection'>
-                            <button onClick={() => { downloadProject() }} title="Go to user page">
-                                Download
-                            </button>
+
+
                             <button onClick={() => { navigate('/mypage') }} title="Go to user page">
                                 <img src={homeIcon} className='icon' />
-
                             </button>
+                            <button onClick={() => { navigate(`/projectPage/${project.id}`); }} title="Go to project page">
+                                <img src={page} className='icon' />
+                            </button>
+
                             <button onClick={handleCollapseCode} title="Expand/collapse code section">
                                 <img src={sideBarIcon} className='icon' />
-                                {/* Collapse code */}
+
                             </button>
                             <button onClick={handleCollapseScene} title="Expand/collapse Three.js section">
                                 <img src={bottomBarIcon} className='icon' />
-                                {/* Collapse scene */}
                             </button>
+
+                            <button onClick={() => { downloadProject() }} title="Deploy project">
+                                <img src={shuttle} className='icon' />
+                            </button>
+
                             <button onClick={captureScreenshot} title="Take screenshot of ThreeJS window">
                                 <img src={ssIcon} className='icon' />
                             </button>
+
                             <button onClick={handleOpenFileDialog} title="Upload file">
                                 <img src={uploadIcon} className='icon' />
                             </button>
