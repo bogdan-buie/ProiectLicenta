@@ -49,7 +49,7 @@ function Header2() {
                     </button>}
                 {userId ? (
                     <div className="dropdown">
-                        <img src={userImage} className="userImage" onClick={toggleMenu} />
+                        <img src={userImage} className="userImage" alt="Click" onClick={toggleMenu} />
                         {isMenuOpen && ( // Verificăm dacă meniul este deschis și afișăm conținutul meniului dacă da
                             <div className="dropdownContent">
                                 <Link to="/user/profile/edit">Edit profile</Link>

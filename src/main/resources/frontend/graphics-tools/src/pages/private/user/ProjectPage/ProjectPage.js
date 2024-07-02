@@ -9,6 +9,7 @@ import { Carousel } from 'react-carousel-minimal';
 import { millisToDateTime } from '../../../../utils/Utilities';
 import Unauthorized from '../../../public/Unauthorized/Unauthorized';
 import ConfirmAlert from '../../../../components/ConfirmAlert/ConfirmAlert';
+import { div } from 'three/examples/jsm/nodes/Nodes.js';
 const ProjectPage = () => {
     let navigate = useNavigate();
     const [project, setProject] = useState('');
@@ -298,10 +299,15 @@ const ProjectPage = () => {
 
 
                     <div className='info'>
-                        <label htmlFor="description">Description</label>
-                        <div className='description' id="description" >
-                            <i>"{project.description}"</i>
-                        </div>
+
+                        {project.description &&
+                            <div>
+                                <label htmlFor="description">Description</label>
+                                <div className='description' id="description" >
+                                    <i>"{project.description}"</i>
+                                </div>
+                            </div>}
+
                     </div>
 
                     {data.length > 0 && (

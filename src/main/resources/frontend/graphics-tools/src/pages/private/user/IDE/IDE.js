@@ -118,7 +118,7 @@ const IDE = () => {
         ).then(
             (response) => {
                 setModelProject(response.data);
-                // console.log(response.data);
+                console.log(response.data);
 
             }).catch(
                 (error) => {

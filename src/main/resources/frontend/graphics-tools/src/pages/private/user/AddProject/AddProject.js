@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import './AddProject.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import { request, request2, getToken } from '../../../../utils/axios_helper';
+import { defaultURL, request, request2, getToken } from '../../../../utils/axios_helper';
 import cubeImage from '../../../../../src/assets/image/templateCube.png';
 import axesImage from '../../../../../src/assets/image/templateAxes.png';
 import axesGridImage from '../../../../../src/assets/image/templateGrid&Axes.png';
+import imgtemplate4 from '../../../../../src/assets/image/template4.png';
+import imgtemplate5 from '../../../../../src/assets/image/template5.png';
 import { getTemplate } from '../../../../utils/Utilities';
 export default function AddProject() {
     const { userId } = useParams();
     let navigate = useNavigate();
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
+    const [projectId, setProjectId] = useState();
     const [description_template, setDescriptionTemplate] = useState('');
     const [selectedTemplate, setSelectedTemplate] = useState('');
     const [templateImage, setTemplateImage] = useState(null);
@@ -19,11 +22,9 @@ export default function AddProject() {
             setTemplateImage(cubeImage);
             setDescriptionTemplate(descriptions_template[0]);
         }
-
-
     }, [cubeImage]);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         request(
             "POST",
@@ -41,6 +42,7 @@ export default function AddProject() {
 
                     if (response.data) {
                         console.log(response.data);
+                        setProjectId(response.data);
                         updateCode(response.data, selectedTemplate);
                     }
                     console.log(response.data);
@@ -52,10 +54,14 @@ export default function AddProject() {
 
     };
     const descriptions_template = [
-        "Cub iluminat de culoare galbenă, cu latura de o unitate",
-        "Sistemul de coordonate XYZ",
-        "Sistemul de coordonate XYZ împreună cu un grilaj cu latura de 20 unități",
-        "Descriere 3"];
+        "Yellow illuminated cube, with a side length of one unit",
+        "XYZ coordinate system",
+        "XYZ coordinate system together with a grid with a side length of 20 units",
+        "Add an object from an OBJ file",
+        "Add an object from an OBJ file that also has an associated MTL file"
+    ];
+
+
     const handleTemplateSelect = (template) => {
         setSelectedTemplate(template);
         // Setează imaginea și textul corespunzător pentru fiecare template
@@ -64,19 +70,139 @@ export default function AddProject() {
                 setTemplateImage(cubeImage);
                 setDescriptionTemplate(descriptions_template[0]);
                 break;
+
             case 'template2':
                 setTemplateImage(axesImage);
                 setDescriptionTemplate(descriptions_template[1]);
                 break;
+
             case 'template3':
                 setTemplateImage(axesGridImage);
                 setDescriptionTemplate(descriptions_template[2]);
+                break;
+
+            case 'template4':
+                setTemplateImage(imgtemplate4);
+                setDescriptionTemplate(descriptions_template[3]);
+                break;
+
+            case 'template5':
+                setTemplateImage(imgtemplate5);
+                setDescriptionTemplate(descriptions_template[4]);
                 break;
             default:
                 setTemplateImage(null);
 
         }
     };
+    const addFILE2 = async (link, fileName, id) => {
+        try {
+            // Fetch the file from the provided link
+            const response = await fetch(link);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            // Read the file as a Blob
+            const fileBlob = await response.blob();
+
+            // Assuming the file is text-based, read it as text for display
+            const fileText = await fileBlob.text();
+
+            // Display the file content
+            console.log('File Content:');
+            console.log(fileText);
+
+            // Create a File object from the Blob
+            const file = new File([fileBlob], fileName, { type: fileBlob.type });
+
+            // Prepare the FormData object
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Get the authentication token
+            const token = getToken();
+
+            // Set headers including Authorization token
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            };
+
+            // Send the file to the backend
+            const uploadResponse = await request2("POST", "/models/upload", headers, formData);
+            console.log("Linia 129")
+            console.log(uploadResponse.data);
+            console.log(file.name);
+
+            // Assuming handleCreateProjectModel is defined somewhere to handle the response
+            handleCreateProjectModel(uploadResponse.data.fileName, uploadResponse.data.link, uploadResponse.data.extension, file.name, id);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
+
+
+    const addFILE = async (filePath, nume, id) => {
+        try {
+            const response = await fetch(filePath);
+            const fileBlob = await response.blob();
+            const file = new File([fileBlob], nume, { type: fileBlob.type });
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const token = getToken();
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            };
+
+            try {
+                const response = await request2("POST", `/models/upload`, headers, formData);
+                console.log(response.data);
+                console.log(file.name);
+                setTimeout(handleCreateProjectModel(response.data.fileName, response.data.link, response.data.extension, file.name, id), 500);
+
+            } catch (error) {
+                console.log(error);
+            }
+        } catch (error) {
+            console.log('Error fetching the file:', error);
+        }
+    };
+
+    const handleCreateProjectModel = (fileName, link, extension, alias, id) => {
+
+        const newModelProject = {
+            idProject: id,
+            fileName: fileName,
+            alias: alias,
+            link: link,
+            extension: extension
+        };
+        console.log(newModelProject);
+        request(
+            "POST",
+            `/modelproject/create`,
+            newModelProject
+        ).then(
+            (response) => {
+                console.log(response.data);
+
+            }).catch(
+                (error) => {
+
+                    console.log(error);
+                }
+            );
+
+
+    }
+
     const updateCode = async (id, template) => {
         const code = getTemplate(template)
         const formData = new FormData();
@@ -95,7 +221,21 @@ export default function AddProject() {
         ).then(
             (response) => {
                 console.log(response.data);
+
+
+                switch (template) {
+                    case 'template4':
+                        addFILE2('https://firebasestorage.googleapis.com/v0/b/sodium-coil-312918.appspot.com/o/models%2ftemplate4.obj?alt=media', 'template4.obj', id);
+                        break;
+                    case 'template5':
+                        addFILE2('https://firebasestorage.googleapis.com/v0/b/sodium-coil-312918.appspot.com/o/models%2ftemplate5.obj?alt=media', 'template5.obj', id);
+                        addFILE2('https://firebasestorage.googleapis.com/v0/b/sodium-coil-312918.appspot.com/o/models%2ftemplate5.mtl?alt=media', 'template5.mtl', id);
+
+                        break;
+                }
+                // addFILE('src/assets/template4.obj', id);
                 navigate('/mypage');
+                // setTimeout(navigate(`/editProject/${id}`), 1000);
 
             }).catch(
                 (error) => {
@@ -166,6 +306,29 @@ export default function AddProject() {
                                         onChange={() => handleTemplateSelect("template3")}
                                     />
                                     <label htmlFor="template3">XYZ axes & grid</label>
+                                </div>
+
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="template4"
+                                        name="template"
+                                        value="template4"
+                                        // checked='false'
+                                        onChange={() => handleTemplateSelect("template4")}
+                                    />
+                                    <label htmlFor="template4">Add OBJ file to project</label>
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id="template5"
+                                        name="template"
+                                        value="template5"
+                                        // checked='false'
+                                        onChange={() => handleTemplateSelect("template5")}
+                                    />
+                                    <label htmlFor="template4">Add OBJ and MTL file to project</label>
                                 </div>
                             </div>
                             <div className='descriptionTemplate'>

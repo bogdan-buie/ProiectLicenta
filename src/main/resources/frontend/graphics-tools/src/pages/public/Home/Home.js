@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useNavigate } from 'react-router-dom';
 import Header2 from '../../../containers/Header2/Header2';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
@@ -11,7 +12,7 @@ import './Home.css';
 
 const Home = () => {
     const canvasRef = useRef();
-
+    let navigate = useNavigate();
     useEffect(() => {
         // Curățăm toți copiii din div
         while (canvasRef.current.firstChild) {
@@ -133,7 +134,7 @@ const Home = () => {
         // Adăugăm textul "Explore projects din aceasta galaxie"
         const fontLoader = new FontLoader();
         fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-            const textGeometry = new TextGeometry('Explore projects from this solar system', {
+            const textGeometry = new TextGeometry('Explore and create projects with Three.js', {
                 font: font,
                 size: 4,
                 height: 0.2,
@@ -142,6 +143,7 @@ const Home = () => {
             const textMesh = new THREE.Mesh(textGeometry, textMaterial);
             textMesh.position.set(-20, 0, -50); // Poziționăm textul după cum dorim
             scene.add(textMesh);
+
         });
 
         return () => {
@@ -157,9 +159,31 @@ const Home = () => {
             <div className="home-container">
                 <div className="threejs-container" ref={canvasRef} />
                 <div className="info-section">
-                    <h2>About Our App</h2>
-                    <p>info</p>
+                    <h2>About our app</h2>
+                    <p>
+                        Welcome to our Online IDE for Three.js, the ultimate platform for 3D enthusiasts and developers! Our app provides an intuitive and powerful environment to create, edit, and share stunning 3D projects using the popular Three.js library. Whether you're a beginner exploring the world of 3D graphics or an experienced developer, our IDE is designed to cater to all your needs.
+                    </p>
+                    <b>Key features:</b>
+                    <ul>
+                        <li><b>Create New Projects:</b> Start from scratch or use one of our templates to kickstart your 3D creations. Our user-friendly interface and comprehensive tools make it easy to bring your ideas to life.</li>
+                        <li><b>Publish and Share:</b> Showcase your work by publishing your projects. Share your creativity with the world and let others see what you've built.</li>
+                        <li><b>Import Projects:</b> Discover public projects created by other users and import them into your project list.</li>
+                    </ul>
+                    Our Online IDE for Three.js not only simplifies the development process but also fosters a vibrant community where ideas and innovations can thrive. Join us and take your 3D projects to the next level!
                 </div>
+
+                <div className="join-section">
+                    <h2>Join Our Community Today!</h2>
+                    <p>Create an account to unlock exclusive features and connect with other 3D developers. Start saving, sharing, and collaborating on amazing Three.js projects now!</p>
+
+                    <div className='button-section'>
+                        <button onClick={() => { navigate('/login') }} title="Go to login/register page">
+                            Join now
+                        </button>
+
+                    </div>
+                </div>
+
             </div>
         </div >
 

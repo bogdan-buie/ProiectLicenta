@@ -14,6 +14,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    background-color: #E0ECFE;
+
 }
 
 .home-container .header {
@@ -55,16 +57,25 @@
 
 .home-container .threejs-container {
     width: 100%;
-    height: 600px;
+    height: 100vh;
     background-color: #000;
 }
 
 .home-container .info-section {
-    margin: 200px;
-    padding: 20px;
-    background-color: rgba(213, 213, 213, 0.447);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 40px;
+    background-color: rgb(189, 189, 189);
     border-radius: 10px;
     max-width: 800px;
+    text-align: left;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.home-container .info-section:hover {
+
+    background-color: rgb(165, 165, 165);
+
 }
 
 .home-container .info-section h2 {
@@ -75,4 +86,52 @@
 .home-container .info-section p {
     font-size: 1rem;
     line-height: 1.6;
+}
+
+.home-container .join-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 40px;
+    background-color: #93C5FD;
+    border-radius: 10px;
+    max-width: 800px;
+    text-align: left;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.home-container .join-section:hover {
+
+    background-color: #74b1f7;
+
+}
+
+.home-container .join-section h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+
+}
+
+.home-container .join-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.home-container .join-section .button-section {
+    text-align: center;
+}
+
+.home-container button {
+    padding: 15px;
+    margin-left: 20px;
+    width: fit-content;
+    font-size: x-large;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.home-container button:hover {
+    background-color: #0056b3;
 }
